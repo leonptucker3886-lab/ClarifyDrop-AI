@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 interface AnalysisResult {
   agreements: string[];
@@ -378,6 +379,7 @@ ${result.navigationScript}
 
   return (
     <main className="min-h-screen py-12 px-4">
+      <ThemeSwitcher />
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <div className="flex justify-center mb-8">
@@ -548,10 +550,17 @@ ${result.navigationScript}
         </form>
 
         <div className="text-center mt-12 p-6 bg-slate-900/50 rounded-lg border border-slate-700">
-          <p className="text-slate-400 text-sm">
-            Affiliates earn 30% commission per sale. Use your link: https://clarify-drop-ai.vercel.app/?ref=YOURCODE
+          <p className="text-slate-400 text-sm leading-relaxed">
+            Affiliates earn 30% ($3) per sale.
             <br />
-            Contact leonptucker@gmail.com with your code and PayPal email to get paid.
+            1. Pick your unique code (e.g. yourname123)
+            <br />
+            2. Use this link: https://clarify-drop-ai.vercel.app/?ref=YOURCODE
+            <br />
+            3. Email leonptucker@gmail.com with your code and PayPal email to get paid monthly.
+            <br />
+            <br />
+            No account or dashboard needed — simple and manual tracking.
           </p>
         </div>
       </div>
