@@ -394,7 +394,11 @@ ${result.navigationScript}
             <ClarityLogo />
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-8 leading-tight">
-            Stop the rewrite. <span className="text-yellow-400 text-5xl">☢️</span> Real Answers.
+            Stop the rewrite.
+            <br />
+            <span className="text-yellow-400 text-5xl">☢️</span>
+            <br />
+            This report does not hold back and will give factual straightforward answers.
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
             One-time payment of $9.99. Submit your conflict details. Receive a neutral, factual analysis with exact discrepancies, agreements, and actionable navigation scripts.
