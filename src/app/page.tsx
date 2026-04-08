@@ -416,34 +416,33 @@ ${result.navigationScript}
           <div className="space-y-2">
             <Label htmlFor="email" className="text-slate-300">Email</Label>
             <Input
-              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="h-12"
+              placeholder="you@email.com"
+              className="h-12 border-2 border-white/20 focus:border-white/40"
             />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="perspective" className="text-slate-300 text-lg font-semibold">Your full perspective – be as detailed and factual as possible</Label>
             <Textarea
-              id="perspective"
-              value={yourPerspective}
-              onChange={(e) => setYourPerspective(e.target.value)}
-              placeholder="What happened, from your point of view..."
-              className="min-h-[180px] text-base"
+              rows={5}
+              value={theirPerspective}
+              onChange={(e) => setTheirPerspective(e.target.value)}
+              placeholder="Describe or paste their side..."
+              className="mt-2 border-2 border-white/20 focus:border-white/40"
             />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="agreement" className="text-slate-300 text-lg font-semibold">Did this break a previous agreement or boundary?</Label>
             <Textarea
-              id="agreement"
+              rows={4}
               value={brokeAgreement}
               onChange={(e) => setBrokeAgreement(e.target.value)}
-              placeholder="Describe the previous agreement or boundary..."
-              className="min-h-[140px] text-base"
+              placeholder="If yes, describe the previous agreement or boundary that was broken. If no previous agreement existed, write 'No previous agreement or boundary was set.'"
+              className="mt-2 border-2 border-white/20 focus:border-white/40"
             />
             <p className="text-slate-500 text-sm mt-1">
               If yes, describe the previous agreement or boundary that was broken. If no previous agreement existed, write &apos;No previous agreement or boundary was set.&apos;
@@ -453,11 +452,10 @@ ${result.navigationScript}
           <div className="space-y-2">
             <Label htmlFor="resolution" className="text-slate-300 text-lg font-semibold">What resolution or change do you want moving forward? Be specific and factual.</Label>
             <Textarea
-              id="resolution"
-              value={desiredResolution}
-              onChange={(e) => setDesiredResolution(e.target.value)}
-              placeholder="What outcome are you seeking?"
-              className="min-h-[140px] text-base"
+              rows={4}
+              value={previousAttempts}
+              onChange={(e) => setPreviousAttempts(e.target.value)}
+              className="mt-2 border-2 border-white/20 focus:border-white/40"
             />
           </div>
 
