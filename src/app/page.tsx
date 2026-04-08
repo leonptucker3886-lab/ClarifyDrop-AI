@@ -1,6 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface AnalysisResult {
   agreements: string[];
@@ -71,7 +76,7 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    
+
     if (!email || !yourPerspective) {
       setError("Email and your perspective are required.");
       return;
@@ -170,14 +175,14 @@ export default function Home() {
           <div className="card p-6 mb-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold text-white">Summary</h2>
-              <button
+              <Button
                 ref={summaryRef}
                 onClick={() => copyToClipboard(result.summary, "summary")}
-                className="btn-secondary text-sm"
-                style={{ cursor: "pointer" }}
+                variant="outline"
+                size="sm"
               >
                 {copyFeedback.summary || "Copy"}
-              </button>
+              </Button>
             </div>
             <p className="text-slate-300 whitespace-pre-wrap">{result.summary}</p>
           </div>
@@ -223,14 +228,14 @@ export default function Home() {
                   Where You Agree
                   <span className="badge-agreement ml-2">{result.agreements.length}</span>
                 </h2>
-                <button
+                <Button
                   ref={agreementsRef}
                   onClick={() => copyToClipboard(result.agreements.join("\n"), "agreements")}
-                  className="btn-secondary text-sm"
-                  style={{ cursor: "pointer" }}
+                  variant="outline"
+                  size="sm"
                 >
                   {copyFeedback.agreements || "Copy"}
-                </button>
+                </Button>
               </div>
               <ul className="space-y-3">
                 {result.agreements.map((item, index) => (
@@ -276,26 +281,26 @@ export default function Home() {
           <div className="card p-6 mb-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold text-white">What To Do Next</h2>
-              <button
+              <Button
                 ref={navigationRef}
                 onClick={() => copyToClipboard(result.navigationScript, "navigation")}
-                className="btn-secondary text-sm"
-                style={{ cursor: "pointer" }}
+                variant="outline"
+                size="sm"
               >
                 {copyFeedback.navigation || "Copy"}
-              </button>
+              </Button>
             </div>
             <p className="text-slate-300 whitespace-pre-wrap">{result.navigationScript}</p>
           </div>
 
           <div className="flex gap-4 justify-center">
-            <button
+            <Button
               onClick={() => window.location.href = "/"}
-              className="btn-secondary"
+              variant="secondary"
             >
               Start Over
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => {
                 const soloNote = result.solo_note ? `\nNOTE: ${result.solo_note}\n` : "";
                 const resolutionGaps = result.resolution_gaps?.length ? `\nRESOLUTION GAPS (${result.resolution_gaps.length})\n${result.resolution_gaps.map((g, i) => `${i + 1}. ${g}`).join("\n")}\n` : "";
@@ -328,10 +333,9 @@ ${result.navigationScript}
                 a.download = "claritydrop-report.txt";
                 a.click();
               }}
-              className="btn-primary"
             >
               Download Report
-            </button>
+            </Button>
           </div>
         </div>
       </main>
@@ -340,174 +344,141 @@ ${result.navigationScript}
 
   return (
     <main className="min-h-screen py-12 px-4">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
             ClarityDrop AI – Stop the rewrite. Get the exact facts for $9.99.
           </h1>
-          <p className="text-xl text-slate-400">
+          <p className="text-xl text-slate-400 max-w-2xl mx-auto">
             One-time payment. Drop the full details of the conflict. Receive a neutral factual report showing real discrepancies, agreements, and navigation scripts based only on submitted text. Data deleted after 24 hours.
           </p>
         </div>
 
-        <div className="bg-slate-800/50 border border-slate-700 p-4 rounded-lg mb-6">
+        <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-lg mb-8">
           <p className="text-slate-300 text-sm">
             Provide complete details for a more precise report. More complete and neutral input = more accurate factual output.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Email
-            </label>
-            <input
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-slate-300">Email</Label>
+            <Input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="input-field"
               placeholder="you@example.com"
+              className="h-12"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Your full perspective – be as detailed and factual as possible
-            </label>
-            <textarea
+          <div className="space-y-2">
+            <Label htmlFor="perspective" className="text-slate-300">Your full perspective – be as detailed and factual as possible</Label>
+            <Textarea
+              id="perspective"
               value={yourPerspective}
               onChange={(e) => setYourPerspective(e.target.value)}
-              className="input-field min-h-[120px]"
               placeholder="What happened, from your point of view..."
+              className="min-h-[120px]"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Did this break a previous agreement or boundary?
-            </label>
-            <textarea
+          <div className="space-y-2">
+            <Label htmlFor="agreement" className="text-slate-300">Did this break a previous agreement or boundary?</Label>
+            <Textarea
+              id="agreement"
               value={brokeAgreement}
               onChange={(e) => setBrokeAgreement(e.target.value)}
-              className="input-field min-h-[80px]"
               placeholder="Describe the previous agreement or boundary..."
+              className="min-h-[100px]"
             />
-            <p className="text-slate-500 text-xs mt-1">
+            <p className="text-slate-500 text-sm mt-1">
               If yes, describe the previous agreement or boundary that was broken. If no previous agreement existed, write &apos;No previous agreement or boundary was set.&apos;
             </p>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              What resolution or change do you want moving forward? Be specific and factual.
-            </label>
-            <textarea
+          <div className="space-y-2">
+            <Label htmlFor="resolution" className="text-slate-300">What resolution or change do you want moving forward? Be specific and factual.</Label>
+            <Textarea
+              id="resolution"
               value={desiredResolution}
               onChange={(e) => setDesiredResolution(e.target.value)}
-              className="input-field min-h-[80px]"
               placeholder="What outcome are you seeking?"
+              className="min-h-[100px]"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Any previous attempts to resolve this? What was said?
-            </label>
-            <textarea
+          <div className="space-y-2">
+            <Label htmlFor="attempts" className="text-slate-300">Any previous attempts to resolve this? What was said?</Label>
+            <Textarea
+              id="attempts"
               value={previousAttempts}
               onChange={(e) => setPreviousAttempts(e.target.value)}
-              className="input-field min-h-[80px]"
               placeholder="Previous conversations, negotiations..."
+              className="min-h-[100px]"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              What resolution or change do you want moving forward? Be specific and factual.
-            </label>
-            <textarea
-              value={desiredResolution}
-              onChange={(e) => setDesiredResolution(e.target.value)}
-              className="input-field min-h-[80px]"
-              placeholder="What outcome are you seeking?"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Any previous attempts to resolve this? What was said?
-            </label>
-            <textarea
-              value={previousAttempts}
-              onChange={(e) => setPreviousAttempts(e.target.value)}
-              className="input-field min-h-[80px]"
-              placeholder="Previous conversations, negotiations..."
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Other person&apos;s version
-            </label>
-            <textarea
+          <div className="space-y-2">
+            <Label htmlFor="their-perspective" className="text-slate-300">Other person&apos;s version</Label>
+            <Textarea
+              id="their-perspective"
               value={theirPerspective}
               onChange={(e) => setTheirPerspective(e.target.value)}
-              className="input-field min-h-[100px]"
               placeholder="Their version of events..."
+              className="min-h-[120px]"
             />
-            <p className="text-amber-400 text-xs mt-2 font-bold">
+            <p className="text-amber-400 text-sm mt-2 font-bold">
               If the other person is not filling this out themselves, describe their side as accurately as possible by putting yourself in their shoes. Be factual. If this description is incomplete or inaccurate, the report discrepancies and navigation scripts will be off.
             </p>
           </div>
 
-          <div className="bg-slate-800 p-4 rounded-lg border border-slate-700">
-            <div className="flex items-start gap-3">
-              <input
-                type="checkbox"
+          <div className="bg-slate-800 p-6 rounded-lg border border-slate-700 space-y-4">
+            <div className="flex items-start space-x-3">
+              <Checkbox
                 id="terms"
                 checked={agreedToTerms}
-                onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="mt-1 w-4 h-4 accent-blue-500"
+                onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
               />
-              <label htmlFor="terms" className="text-sm text-slate-300">
-                I agree this is a one-time digital purchase of an AI-generated factual report. No refunds. Payment supports development of larger conflict-management tools. Data deleted after 24 hours. Not therapy or legal advice.{" "}
-                <button
-                  type="button"
-                  onClick={() => setShowTerms(!showTerms)}
-                  className="text-blue-400 hover:text-blue-300 underline"
-                >
-                  Read full Terms
-                </button>
-              </label>
-            </div>
-            
-            {showTerms && (
-              <div className="mt-4 p-4 bg-slate-900 rounded text-sm text-slate-400 whitespace-pre-wrap">
-                {TERMS_TEXT}
+              <div className="space-y-2">
+                <Label htmlFor="terms" className="text-sm text-slate-300 font-normal cursor-pointer">
+                  I agree this is a one-time digital purchase of an AI-generated factual report. No refunds. Payment supports development of larger conflict-management tools. Data deleted after 24 hours. Not therapy or legal advice.{" "}
+                  <Button
+                    type="button"
+                    variant="link"
+                    className="h-auto p-0 text-blue-400 hover:text-blue-300 underline"
+                    onClick={() => setShowTerms(!showTerms)}
+                  >
+                    Read full Terms
+                  </Button>
+                </Label>
+                {showTerms && (
+                  <div className="mt-4 p-4 bg-slate-900 rounded text-sm text-slate-400 whitespace-pre-wrap">
+                    {TERMS_TEXT}
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
 
           {error && (
-            <div className="bg-red-900/20 border border-red-500 text-red-400 px-4 py-3 rounded">
+            <div className="bg-red-900/20 border border-red-500 text-red-400 px-4 py-3 rounded-md">
               {error}
             </div>
           )}
 
-          <button 
-            type="submit" 
-            className="btn-primary w-full text-lg"
+          <Button
+            type="submit"
+            size="lg"
+            className="w-full text-lg py-6"
             disabled={!agreedToTerms}
           >
             Pay $9.99 and Get the Report
-          </button>
+          </Button>
         </form>
 
-        <p className="text-center text-slate-500 text-sm mt-6">
-          Secure payment via PayPal. Results sent to your email.
-        </p>
-
-        <div className="text-center mt-8 p-4 bg-slate-900/50 rounded-lg border border-slate-700">
+        <div className="text-center mt-12 p-6 bg-slate-900/50 rounded-lg border border-slate-700">
           <p className="text-slate-400 text-sm">
             Affiliates earn 30% commission per sale. Use your link: https://clarify-drop-ai.vercel.app/?ref=YOURCODE
             <br />
