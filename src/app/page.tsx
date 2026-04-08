@@ -20,8 +20,7 @@ export default function Home() {
   const [step, setStep] = useState<"form" | "processing" | "result">("form");
   const [email, setEmail] = useState("");
   const [yourPerspective, setYourPerspective] = useState("");
-  const [firstTime, setFirstTime] = useState("");
-  const [violence, setViolence] = useState("");
+  const [discussedItems, setDiscussedItems] = useState("");
   const [desiredResolution, setDesiredResolution] = useState("");
   const [previousAttempts, setPreviousAttempts] = useState("");
   const [theirPerspective, setTheirPerspective] = useState("");
@@ -94,8 +93,7 @@ export default function Home() {
       const orderData = {
         email,
         yourPerspective,
-        firstTime: firstTime || "",
-        violence: violence || "",
+        discussedItems: discussedItems || "",
         desiredResolution: desiredResolution || "",
         previousAttempts: previousAttempts || "",
         theirPerspective: theirPerspective || ""
@@ -345,16 +343,16 @@ ${result.navigationScript}
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Stop the rewrite. See the facts.
+            ClarityDrop AI – Stop the rewrite. Get the exact facts for $9.99.
           </h1>
           <p className="text-xl text-slate-400">
-            Get the exact discrepancies and navigation script. <span className="text-blue-400 font-semibold">$9.99</span>
+            One-time payment. Drop the full details of the conflict. Receive a neutral factual report showing real discrepancies, agreements, and navigation scripts based only on submitted text. Data deleted after 24 hours.
           </p>
         </div>
 
         <div className="bg-slate-800/50 border border-slate-700 p-4 rounded-lg mb-6">
           <p className="text-slate-300 text-sm">
-            Provide complete details for a more precise report showing exact discrepancies in timelines, events, discussed items, and desired resolutions.
+            Provide complete details for a more precise report. More complete and neutral input = more accurate factual output.
           </p>
         </div>
 
@@ -386,25 +384,37 @@ ${result.navigationScript}
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              Is this the first time this topic has been argued on?
+              What exactly was discussed or agreed upon?
             </label>
             <textarea
-              value={firstTime}
-              onChange={(e) => setFirstTime(e.target.value)}
+              value={discussedItems}
+              onChange={(e) => setDiscussedItems(e.target.value)}
               className="input-field min-h-[80px]"
-              placeholder="Yes/No, and details if it's recurring..."
+              placeholder="Specific topics, conversations, agreements..."
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              Was there any violence involved?
+              What resolution or change do you want moving forward? Be specific and factual.
             </label>
             <textarea
-              value={violence}
-              onChange={(e) => setViolence(e.target.value)}
+              value={desiredResolution}
+              onChange={(e) => setDesiredResolution(e.target.value)}
               className="input-field min-h-[80px]"
-              placeholder="Physical violence, threats, property damage..."
+              placeholder="What outcome are you seeking?"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              Any previous attempts to resolve this? What was said?
+            </label>
+            <textarea
+              value={previousAttempts}
+              onChange={(e) => setPreviousAttempts(e.target.value)}
+              className="input-field min-h-[80px]"
+              placeholder="Previous conversations, negotiations..."
             />
           </div>
 
@@ -442,8 +452,8 @@ ${result.navigationScript}
               className="input-field min-h-[100px]"
               placeholder="Their version of events..."
             />
-            <p className="text-amber-400 text-xs mt-2">
-              If they are not filling this out, describe their side as accurately as possible by putting yourself in their shoes. Be factual. If this description is incomplete or inaccurate, the report will be off.
+            <p className="text-amber-400 text-xs mt-2 font-bold">
+              If the other person is not filling this out themselves, describe their side as accurately as possible by putting yourself in their shoes. Be factual. If this description is incomplete or inaccurate, the report discrepancies and navigation scripts will be off.
             </p>
           </div>
 
@@ -493,6 +503,14 @@ ${result.navigationScript}
         <p className="text-center text-slate-500 text-sm mt-6">
           Secure payment via PayPal. Results sent to your email.
         </p>
+
+        <div className="text-center mt-8 p-4 bg-slate-900/50 rounded-lg border border-slate-700">
+          <p className="text-slate-400 text-sm">
+            Affiliates earn 30% commission per sale. Use your link: https://clarify-drop-ai.vercel.app/?ref=YOURCODE
+            <br />
+            Contact leonptucker@gmail.com with your code and PayPal email to get paid.
+          </p>
+        </div>
       </div>
     </main>
   );

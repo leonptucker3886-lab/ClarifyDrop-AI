@@ -52,8 +52,7 @@ Rules:
 - Be harsh on discrepancies - call them exactly what they are
 - The navigation script should be specific conversation points or actions, not therapy
 - Analyze writing style and language patterns: if both perspectives use similar vocabulary, sentence structures, or phrasing, note this in solo_note
-- Analyze whether this is a first-time or recurring conflict and include in navigation
-- Analyze any violence mentioned and include safety considerations in navigation
+- Analyze the "discussed items" field to identify what was agreed upon vs what is being disputed
 - Analyze the "desired resolution" field to identify resolution gaps
 - Analyze "previous attempts" to identify what has been tried
 `;
@@ -61,8 +60,7 @@ Rules:
 interface OrderData {
   email: string;
   yourPerspective: string;
-  firstTime: string;
-  violence: string;
+  discussedItems: string;
   desiredResolution: string;
   previousAttempts: string;
   theirPerspective: string;
@@ -80,11 +78,8 @@ export async function processWithGrok(orderData: OrderData): Promise<AnalysisRes
 YOUR FULL PERSPECTIVE:
 ${orderData.yourPerspective}
 
-IS THIS THE FIRST TIME THIS TOPIC HAS BEEN ARGUED ON:
-${orderData.firstTime}
-
-WAS THERE ANY VIOLENCE INVOLVED:
-${orderData.violence}
+WHAT EXACTLY WAS DISCUSSED OR AGREED UPON:
+${orderData.discussedItems}
 
 DESIRED RESOLUTION (WHAT YOU WANT):
 ${orderData.desiredResolution}

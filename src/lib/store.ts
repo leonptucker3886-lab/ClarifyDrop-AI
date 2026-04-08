@@ -2,8 +2,7 @@ export interface Order {
   id: string;
   email: string;
   yourPerspective: string;
-  firstTime: string;
-  violence: string;
+  discussedItems: string;
   desiredResolution: string;
   previousAttempts: string;
   theirPerspective: string;
