@@ -22,20 +22,19 @@ const TERMS_TEXT = `This is a one-time digital purchase of an AI-generated factu
 This service delivers instant factual analysis based only on submitted text. Once the report is generated and emailed, the purchase is final.`;
 
 const ClarityLogo = () => (
-  <div className="flex items-center gap-3 text-white font-bold">
-    <span className="text-2xl">Clarity</span>
-    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center shadow-lg">
-      <span className="text-white text-sm font-bold">⚖️</span>
+  <div className="flex items-center gap-2">
+    <div className="relative">
+      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-2xl transform rotate-3">
+        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center transform -rotate-3">
+          <span className="text-blue-600 text-lg font-black">C</span>
+        </div>
+      </div>
+      <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white shadow-lg"></div>
     </div>
-    <span
-      className="text-3xl italic"
-      style={{
-        fontFamily: '"Dancing Script", "Brush Script MT", cursive',
-        textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
-      }}
-    >
-      AI
-    </span>
+    <div className="flex flex-col">
+      <span className="text-white text-2xl font-bold tracking-tight">Clarity</span>
+      <span className="text-blue-400 text-sm font-medium -mt-1">AI</span>
+    </div>
   </div>
 );
 
