@@ -433,9 +433,8 @@ ${result.navigationScript}
            </div>
          </div>
 
-         <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-lg mb-8">
-           <h3 className="text-xl font-bold text-white mb-4">Sample Report Preview</h3>
-           <div className="flex justify-center">
+          <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-lg mb-8">
+            <div className="flex justify-center">
              <div className="relative bg-gray-800 border border-gray-600 rounded-lg p-4 max-w-lg w-full" style={{ aspectRatio: '16/10' }}>
                {/* Laptop frame */}
                <div className="absolute top-0 left-0 right-0 h-2 bg-gray-700 rounded-t-lg"></div>
