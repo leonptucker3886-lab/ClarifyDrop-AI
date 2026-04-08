@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-export type Theme = "dark" | "light" | "blue" | "green";
+export type Theme = "dark" | "light" | "unc-blue" | "green-white";
 
 interface ThemeContextType {
   theme: Theme;
@@ -29,7 +29,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   useEffect(() => {
     // Load theme from localStorage on mount
     const savedTheme = localStorage.getItem("claritydrop-theme") as Theme;
-    if (savedTheme && ["dark", "light", "blue", "green"].includes(savedTheme)) {
+    if (savedTheme && ["dark", "light", "unc-blue", "green-white"].includes(savedTheme)) {
       setTheme(savedTheme);
     }
   }, []);
@@ -39,7 +39,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     const body = document.body;
 
     // Remove all existing theme classes
-    body.classList.remove("theme-dark", "theme-light", "theme-blue", "theme-green");
+    body.classList.remove("theme-dark", "theme-light", "theme-unc-blue", "theme-green-white");
 
     // Add current theme class
     body.classList.add(`theme-${theme}`);
@@ -50,12 +50,12 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         body.style.background = "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)";
         body.style.color = "#0f172a";
         break;
-      case "blue":
-        body.style.background = "linear-gradient(135deg, #1e293b 0%, #334155 100%)";
-        body.style.color = "#f1f5f9";
+      case "green-white":
+        body.style.background = "linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%)";
+        body.style.color = "#14532d";
         break;
-      case "green":
-        body.style.background = "linear-gradient(135deg, #1e293b 0%, #334155 100%)";
+      case "unc-blue":
+        body.style.background = "linear-gradient(135deg, #13294b 0%, #1e3a8a 100%)";
         body.style.color = "#f1f5f9";
         break;
       default: // dark

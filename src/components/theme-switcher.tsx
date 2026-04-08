@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 const themeOptions: { value: Theme; label: string; icon: string }[] = [
   { value: "dark", label: "Dark", icon: "🌙" },
   { value: "light", label: "Light", icon: "☀️" },
-  { value: "blue", label: "Blue", icon: "🌊" },
-  { value: "green", label: "Green", icon: "🌲" },
+  { value: "green-white", label: "Green & White", icon: "🌿" },
+  { value: "unc-blue", label: "UNC Blue", icon: "🏀" },
 ];
 
 export function ThemeSwitcher() {
