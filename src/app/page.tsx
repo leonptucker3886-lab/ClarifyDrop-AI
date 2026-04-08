@@ -34,7 +34,7 @@ const ClarityLogo = () => (
       <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-4 border-transparent border-t-yellow-300"></div>
     </div>
     <div className="flex flex-col">
-      <span className="text-white text-3xl font-bold tracking-tight">Clarity</span>
+      <span className="text-white text-3xl font-bold tracking-tight" style={{ fontFamily: "'Dancing Script', cursive" }}>Clarity</span>
       <span className="text-blue-400 text-sm font-medium -mt-1">AI</span>
     </div>
     <div className="relative w-16 h-16">
