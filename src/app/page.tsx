@@ -703,7 +703,7 @@ ${result.navigationScript}
                 setStep('processing');
                 setOrderId(data.orderID);
               }}
-              style={{ layout: 'horizontal', color: 'blue', shape: 'rect', label: 'paypal' }}
+              style={{ color: 'blue', shape: 'rect', label: 'paypal' }}
             />
           ) : (
             <div className="text-center text-slate-400 py-4">
