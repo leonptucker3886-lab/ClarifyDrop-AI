@@ -22,20 +22,22 @@ const TERMS_TEXT = `This is a one-time digital purchase of an AI-generated factu
 This service delivers instant factual analysis based only on submitted text. Once the report is generated and emailed, the purchase is final.`;
 
 const ClarityLogo = () => (
-  <div className="flex items-center gap-3">
+  <div className="flex items-center gap-4">
     <div className="relative">
-      <div className="w-14 h-14 bg-gradient-to-br from-slate-100 to-slate-200 rounded-lg flex items-center justify-center shadow-lg">
-        <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-md flex items-center justify-center">
-          <span className="text-white text-xl font-bold">C</span>
+      {/* Eyeball outer white */}
+      <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-xl border-2 border-slate-200">
+        {/* Iris (blue ring) */}
+        <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center border-2 border-blue-300">
+          {/* Pupil made of C */}
+          <span className="text-black text-2xl font-black transform rotate-90">C</span>
         </div>
       </div>
-      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center">
-        <span className="text-white text-xs font-bold">AI</span>
-      </div>
+      {/* Small highlight dot */}
+      <div className="absolute top-3 left-4 w-2 h-2 bg-white rounded-full opacity-80"></div>
     </div>
     <div className="flex flex-col">
       <span className="text-white text-3xl font-bold tracking-tight">Clarity</span>
-      <span className="text-slate-400 text-sm font-medium -mt-2">Conflict Resolution</span>
+      <span className="text-blue-400 text-sm font-medium -mt-1">AI</span>
     </div>
   </div>
 );
