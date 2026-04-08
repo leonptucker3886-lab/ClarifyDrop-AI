@@ -398,25 +398,25 @@ ${result.navigationScript}
             <ul className="space-y-3">
               <li className="flex items-start gap-2">
                 <span className="text-green-400 mt-1">✓</span>
-                <span className="text-slate-300">Exact factual discrepancies from submitted text only</span>
+                <span className="text-slate-300">Exact discrepancies in timelines, events, previous agreements or boundaries</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-400 mt-1">✓</span>
-                <span className="text-slate-300">Clear agreements and mismatches (including previous agreements or boundaries)</span>
+                <span className="text-slate-300">Clear agreements and mismatches based only on submitted text</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-400 mt-1">✓</span>
-                <span className="text-slate-300">Navigation scripts you can copy-paste</span>
+                <span className="text-slate-300">Navigation scripts you can copy and use</span>
               </li>
             </ul>
             <ul className="space-y-3">
               <li className="flex items-start gap-2">
                 <span className="text-green-400 mt-1">✓</span>
-                <span className="text-slate-300">Resolution gaps identified</span>
+                <span className="text-slate-300">Resolution gaps and factual next steps</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-400 mt-1">✓</span>
-                <span className="text-slate-300">Full report delivered by email + PDF download</span>
+                <span className="text-slate-300">Full report emailed + PDF download</span>
               </li>
             </ul>
           </div>
