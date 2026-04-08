@@ -24,15 +24,15 @@ interface ThemeProviderProps {
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>("dark");
-
-  useEffect(() => {
-    // Load theme from localStorage on mount
-    const savedTheme = localStorage.getItem("claritydrop-theme") as Theme;
-    if (savedTheme && ["dark", "light", "unc-blue", "green-white"].includes(savedTheme)) {
-      setTheme(savedTheme);
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window !== "undefined") {
+      const savedTheme = localStorage.getItem("claritydrop-theme") as Theme;
+      if (savedTheme && ["dark", "light", "unc-blue", "green-white"].includes(savedTheme)) {
+        return savedTheme;
+      }
     }
-  }, []);
+    return "dark";
+  });
 
   useEffect(() => {
     // Apply theme directly to body
