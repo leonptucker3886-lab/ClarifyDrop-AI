@@ -398,7 +398,7 @@ ${result.navigationScript}
             <br />
             <span className="text-yellow-400 text-5xl">☢️</span>
             <br />
-            This report does not hold back and will give factual straightforward answers.
+            Get factual and evidence-based no BS answers and solutions.
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
             One-time payment of $9.99. Submit your conflict details. Receive a neutral, factual analysis with exact discrepancies, agreements, and actionable navigation scripts.
