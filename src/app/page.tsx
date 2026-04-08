@@ -1,13 +1,19 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 
 interface AnalysisResult {
   agreements: string[];
   discrepancies: { yourVersion: string; theirVersion: string; explanation: string }[];
   summary: string;
   navigationScript: string;
+  solo_note?: string;
 }
+
+const TERMS_TEXT = `This is a one-time digital purchase of an AI-generated report. No refunds. Payment funds development of larger conflict-management tools. Data is deleted after 24 hours. Not therapy or legal advice.
+
+This service delivers instant factual analysis based only on submitted text. Once the report is generated and emailed, the purchase is final.`;
 
 export default function Home() {
   const [step, setStep] = useState<"form" | "processing" | "result">("form");
@@ -18,6 +24,8 @@ export default function Home() {
   const [error, setError] = useState("");
   const [orderId, setOrderId] = useState("");
   const [copyFeedback, setCopyFeedback] = useState<Record<string, string>>({});
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
   const summaryRef = useRef<HTMLButtonElement>(null);
   const agreementsRef = useRef<HTMLButtonElement>(null);
   const navigationRef = useRef<HTMLButtonElement>(null);
@@ -60,13 +68,18 @@ export default function Home() {
     e.preventDefault();
     setError("");
     
-    if (!email || !yourPerspective || !theirPerspective) {
-      setError("All fields are required.");
+    if (!email || !yourPerspective) {
+      setError("Email and your perspective are required.");
       return;
     }
 
     if (!email.includes("@")) {
       setError("Please enter a valid email.");
+      return;
+    }
+
+    if (!agreedToTerms) {
+      setError("You must agree to the terms to proceed.");
       return;
     }
 
@@ -76,7 +89,7 @@ export default function Home() {
       const response = await fetch("/api/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, yourPerspective, theirPerspective }),
+        body: JSON.stringify({ email, yourPerspective, theirPerspective: theirPerspective || "" }),
       });
 
       const data = await response.json();
@@ -135,34 +148,40 @@ export default function Home() {
             <p className="text-slate-400">Here&apos;s what the facts show</p>
           </div>
 
+          {result.solo_note && (
+            <div className="bg-amber-900/30 border-l-4 border-amber-500 p-4 mb-6">
+              <p className="text-amber-300 font-medium">Note: {result.solo_note}</p>
+            </div>
+          )}
+
           <div className="card p-6 mb-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold text-white">Summary</h2>
               <button
                 ref={summaryRef}
                 onClick={() => copyToClipboard(result.summary, "summary")}
-              className="btn-secondary text-sm"
-              style={{ cursor: "pointer" }}
-            >
-              {copyFeedback.summary || "Copy"}
-            </button>
-          </div>
-          <p className="text-slate-300 whitespace-pre-wrap">{result.summary}</p>
-        </div>
-
-        {result.agreements.length > 0 && (
-          <div className="card p-6 mb-6 section-agreement">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold text-emerald-400">
-                Where You Agree
-                <span className="badge-agreement ml-2">{result.agreements.length}</span>
-              </h2>
-              <button
-                ref={agreementsRef}
-                onClick={() => copyToClipboard(result.agreements.join("\n"), "agreements")}
                 className="btn-secondary text-sm"
                 style={{ cursor: "pointer" }}
               >
+                {copyFeedback.summary || "Copy"}
+              </button>
+            </div>
+            <p className="text-slate-300 whitespace-pre-wrap">{result.summary}</p>
+          </div>
+
+          {result.agreements.length > 0 && (
+            <div className="card p-6 mb-6 section-agreement">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-semibold text-emerald-400">
+                  Where You Agree
+                  <span className="badge-agreement ml-2">{result.agreements.length}</span>
+                </h2>
+                <button
+                  ref={agreementsRef}
+                  onClick={() => copyToClipboard(result.agreements.join("\n"), "agreements")}
+                  className="btn-secondary text-sm"
+                  style={{ cursor: "pointer" }}
+                >
                   {copyFeedback.agreements || "Copy"}
                 </button>
               </div>
@@ -214,6 +233,7 @@ export default function Home() {
                 ref={navigationRef}
                 onClick={() => copyToClipboard(result.navigationScript, "navigation")}
                 className="btn-secondary text-sm"
+                style={{ cursor: "pointer" }}
               >
                 {copyFeedback.navigation || "Copy"}
               </button>
@@ -230,10 +250,11 @@ export default function Home() {
             </button>
             <button
               onClick={() => {
+                const soloNote = result.solo_note ? `\nNOTE: ${result.solo_note}\n` : "";
                 const content = `
 ClarityDrop AI Report
 ====================
-
+${soloNote}
 SUMMARY
 ${result.summary}
 
@@ -275,7 +296,7 @@ ${result.navigationScript}
             Stop the rewrite. See the facts.
           </h1>
           <p className="text-xl text-slate-400">
-            Drop your side. Get the exact discrepancies and what to do next. <span className="text-blue-400 font-semibold">$9.99</span>
+            Get the exact discrepancies and navigation script. <span className="text-blue-400 font-semibold">$9.99</span>
           </p>
         </div>
 
@@ -315,6 +336,40 @@ ${result.navigationScript}
               className="input-field min-h-[150px]"
               placeholder="Their version of events..."
             />
+            <p className="text-amber-400 text-xs mt-2">
+              If the other person is not filling this out themselves, describe their side as accurately as possible by putting yourself in their shoes. Be factual. If this description is incomplete or inaccurate, the report discrepancies and navigation scripts will be off.
+            </p>
+            <p className="text-slate-500 text-xs mt-1">
+              More complete and neutral description = more accurate report.
+            </p>
+          </div>
+
+          <div className="bg-slate-800 p-4 rounded-lg border border-slate-700">
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={agreedToTerms}
+                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                className="mt-1 w-4 h-4 accent-blue-500"
+              />
+              <label htmlFor="terms" className="text-sm text-slate-300">
+                I agree this is a one-time digital purchase of an AI-generated report. No refunds. Payment funds development of larger conflict-management tools. Data is deleted after 24 hours. Not therapy or legal advice.{" "}
+                <button
+                  type="button"
+                  onClick={() => setShowTerms(!showTerms)}
+                  className="text-blue-400 hover:text-blue-300 underline"
+                >
+                  Read full Terms
+                </button>
+              </label>
+            </div>
+            
+            {showTerms && (
+              <div className="mt-4 p-4 bg-slate-900 rounded text-sm text-slate-400 whitespace-pre-wrap">
+                {TERMS_TEXT}
+              </div>
+            )}
           </div>
 
           {error && (
@@ -323,8 +378,12 @@ ${result.navigationScript}
             </div>
           )}
 
-          <button type="submit" className="btn-primary w-full text-lg">
-            Analyze for $9.99
+          <button 
+            type="submit" 
+            className="btn-primary w-full text-lg"
+            disabled={!agreedToTerms}
+          >
+            Pay $9.99 and Get the Report
           </button>
         </form>
 

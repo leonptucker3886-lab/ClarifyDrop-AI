@@ -13,6 +13,7 @@ export interface AnalysisResult {
   discrepancies: { yourVersion: string; theirVersion: string; explanation: string }[];
   summary: string;
   navigationScript: string;
+  solo_note?: string;
 }
 
 export const orders = new Map<string, Order>();

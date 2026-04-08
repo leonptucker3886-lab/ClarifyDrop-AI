@@ -11,9 +11,12 @@ interface AnalysisResult {
   discrepancies: Perspective[];
   summary: string;
   navigationScript: string;
+  solo_note?: string;
 }
 
 const GROK_SYSTEM_PROMPT = `You are a precise, black-and-white factual analyzer. Your job is to identify where two people agree and where they disagree, without emotional language or speculation.
+
+If the other perspective appears to be written by the same person (user filling in both sides), note in the report that the analysis is based on a single submitter's description of both sides. Include this as "solo_note" in your JSON output.
 
 You respond ONLY in JSON. No explanation. No preamble. No filler. Just the JSON object.
 
@@ -30,7 +33,8 @@ Output format:
     }
   ],
   "summary": "2-3 sentence summary of the situation - just the facts, no opinion",
-  "navigationScript": "Specific, actionable 3-step script for addressing this. No fluff. Direct instructions."
+  "navigationScript": "Specific, actionable 3-step script for addressing this. No fluff. Direct instructions.",
+  "solo_note": "Optional: note if both perspectives appear to be from the same submitter"
 }
 
 Rules:
@@ -39,6 +43,7 @@ Rules:
 - Never add opinions or advice beyond the navigation script
 - Be harsh on discrepancies - call them exactly what they are
 - The navigation script should be specific conversation points or actions, not therapy
+- Analyze writing style and language patterns: if both perspectives use similar vocabulary, sentence structures, or phrasing, note this in solo_note
 `;
 
 export async function processWithGrok(yourPerspective: string, theirPerspective: string): Promise<AnalysisResult> {
@@ -56,7 +61,7 @@ ${yourPerspective}
 THEIR VERSION:
 ${theirPerspective}
 
-Identify exact agreements and exact discrepancies. Be precise.`;
+Identify exact agreements and exact discrepancies. Be precise. Check if both versions appear to be written by the same person (look for similar writing style, vocabulary, phrasing).`;
 
   const response = await fetch("https://api.x.ai/v1/chat/completions", {
     method: "POST",
@@ -100,6 +105,7 @@ Identify exact agreements and exact discrepancies. Be precise.`;
       discrepancies: result.discrepancies || [],
       summary: result.summary || "",
       navigationScript: result.navigationScript || "",
+      solo_note: result.solo_note || undefined,
     };
   } catch (parseError) {
     throw new Error("Failed to parse Grok response");
@@ -121,6 +127,14 @@ export async function sendReportEmail(
 
   const resend = new Resend(resendApiKey);
 
+  const soloNoteHtml = result.solo_note ? `
+  <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; margin-bottom: 24px;">
+    <strong>Note:</strong> ${result.solo_note}
+  </div>
+  ` : "";
+
+  const soloNoteText = result.solo_note ? `\nNOTE: ${result.solo_note}\n` : "";
+
   const htmlContent = `
 <!DOCTYPE html>
 <html>
@@ -136,6 +150,7 @@ export async function sendReportEmail(
     .discrepancy-box { background: #fff7ed; padding: 12px; border-radius: 4px; margin-top: 8px; }
     .label { font-size: 12px; color: #64748b; text-transform: uppercase; font-weight: 600; }
     .script { background: #f1f5f9; padding: 16px; border-radius: 8px; white-space: pre-wrap; }
+    .solo-note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; margin-bottom: 24px; }
     ul { margin: 0; padding-left: 20px; }
     li { margin-bottom: 8px; }
     .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b; }
@@ -144,6 +159,8 @@ export async function sendReportEmail(
 <body>
   <h1>ClarityDrop AI Report</h1>
   <p>Here's your analysis. The facts, plain and simple.</p>
+
+  ${result.solo_note ? `<div class="solo-note"><strong>Note:</strong> ${result.solo_note}</div>` : ""}
 
   <h2>Summary</h2>
   <div class="summary">${result.summary}</div>
