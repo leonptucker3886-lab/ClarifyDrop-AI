@@ -22,18 +22,20 @@ const TERMS_TEXT = `This is a one-time digital purchase of an AI-generated factu
 This service delivers instant factual analysis based only on submitted text. Once the report is generated and emailed, the purchase is final.`;
 
 const ClarityLogo = () => (
-  <div className="flex items-center gap-2">
+  <div className="flex items-center gap-3">
     <div className="relative">
-      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-2xl transform rotate-3">
-        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center transform -rotate-3">
-          <span className="text-blue-600 text-lg font-black">C</span>
+      <div className="w-14 h-14 bg-gradient-to-br from-slate-100 to-slate-200 rounded-lg flex items-center justify-center shadow-lg">
+        <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-md flex items-center justify-center">
+          <span className="text-white text-xl font-bold">C</span>
         </div>
       </div>
-      <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white shadow-lg"></div>
+      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center">
+        <span className="text-white text-xs font-bold">AI</span>
+      </div>
     </div>
     <div className="flex flex-col">
-      <span className="text-white text-2xl font-bold tracking-tight">Clarity</span>
-      <span className="text-blue-400 text-sm font-medium -mt-1">AI</span>
+      <span className="text-white text-3xl font-bold tracking-tight">Clarity</span>
+      <span className="text-slate-400 text-sm font-medium -mt-2">Conflict Resolution</span>
     </div>
   </div>
 );
@@ -362,18 +364,19 @@ ${result.navigationScript}
   return (
     <main className="min-h-screen py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-8">
-            <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-4 rounded-full shadow-lg">
-              <ClarityLogo />
-            </div>
+        <div className="text-center mb-16">
+          <div className="flex justify-center mb-10">
+            <ClarityLogo />
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            ClarityDrop AI – Stop the rewrite. Get the exact facts for $9.99.
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight">
+            Stop the rewrite. Get the exact facts.
           </h1>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-            One-time payment. Drop the full details of the conflict. Receive a neutral factual report showing real discrepancies, agreements, and navigation scripts based only on submitted text. Data deleted after 24 hours.
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+            One-time payment of $9.99. Submit your conflict details. Receive a neutral, factual analysis with exact discrepancies, agreements, and actionable navigation scripts.
           </p>
+          <div className="mt-6 text-lg text-slate-400">
+            Data deleted after 24 hours. No therapy or legal advice.
+          </div>
         </div>
 
         <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-lg mb-8">
@@ -466,7 +469,7 @@ ${result.navigationScript}
               value={previousAttempts}
               onChange={(e) => setPreviousAttempts(e.target.value)}
               placeholder="Previous conversations, negotiations..."
-              className="min-h-[140px] text-base"
+              className="min-h-[140px] text-base border-2 border-white/20 focus:border-white/40 text-white placeholder:text-white/60"
             />
           </div>
 
@@ -477,7 +480,7 @@ ${result.navigationScript}
               value={theirPerspective}
               onChange={(e) => setTheirPerspective(e.target.value)}
               placeholder="Their version of events..."
-              className="min-h-[160px] text-base"
+              className="min-h-[160px] text-base border-2 border-white/20 focus:border-white/40 text-white placeholder:text-white/60"
             />
             <p className="text-amber-400 text-sm mt-2 font-bold">
               If the other person is not filling this out themselves, describe their side as accurately as possible by putting yourself in their shoes. Be factual. If this description is incomplete or inaccurate, the report discrepancies and navigation scripts will be off.
