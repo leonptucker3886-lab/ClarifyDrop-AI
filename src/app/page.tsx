@@ -303,7 +303,6 @@ ${result.navigationScript}
   }
 
   return (
-    <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "", currency: "USD" }}>
       <main className="min-h-screen py-12 px-4 bg-slate-900">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
@@ -452,50 +451,52 @@ ${result.navigationScript}
               </Label>
             </div>
             {process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ? (
-              <PayPalButtons
-              createOrder={async (data, actions) => {
-                if (!agreedToTerms) {
-                  throw new Error('You must agree to the terms to proceed.');
-                }
-                const response = await fetch('/api/create-order', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    email,
-                    yourPerspective,
-                    brokeAgreement,
-                    desiredResolution,
-                    previousAttempts,
-                    theirPerspective
-                  })
-                });
-                if (!response.ok) throw new Error('Failed to create internal order');
-                const order = await response.json();
+              <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID, currency: "USD" }}>
+                <PayPalButtons
+                createOrder={async (data, actions) => {
+                  if (!agreedToTerms) {
+                    throw new Error('You must agree to the terms to proceed.');
+                  }
+                  const response = await fetch('/api/create-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      email,
+                      yourPerspective,
+                      brokeAgreement,
+                      desiredResolution,
+                      previousAttempts,
+                      theirPerspective
+                    })
+                  });
+                  if (!response.ok) throw new Error('Failed to create internal order');
+                  const order = await response.json();
 
-                const paypalResponse = await fetch('/api/paypal/create-order', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    orderId: order.orderId,
-                    amount: '9.99'
-                  })
-                });
-                if (!paypalResponse.ok) throw new Error('Failed to create PayPal order');
-                const paypalOrder = await paypalResponse.json();
-                return paypalOrder.id;
-              }}
-              onApprove={async (data, actions) => {
-                const response = await fetch('/api/paypal/success', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ orderId: data.orderID })
-                });
-                if (!response.ok) throw new Error('Payment failed');
-                setStep('processing');
-                setOrderId(data.orderID);
-              }}
-              style={{ color: 'blue', shape: 'rect', label: 'paypal' }}
-            />
+                  const paypalResponse = await fetch('/api/paypal/create-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      orderId: order.orderId,
+                      amount: '9.99'
+                    })
+                  });
+                  if (!paypalResponse.ok) throw new Error('Failed to create PayPal order');
+                  const paypalOrder = await paypalResponse.json();
+                  return paypalOrder.id;
+                }}
+                onApprove={async (data, actions) => {
+                  const response = await fetch('/api/paypal/success', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ orderId: data.orderID })
+                  });
+                  if (!response.ok) throw new Error('Payment failed');
+                  setStep('processing');
+                  setOrderId(data.orderID);
+                }}
+                style={{ color: 'blue', shape: 'rect', label: 'paypal' }}
+              />
+              </PayPalScriptProvider>
             ) : (
               <p className="text-red-400">PayPal checkout not configured. Please check environment variables.</p>
             )}
@@ -523,6 +524,5 @@ ${result.navigationScript}
           </div>
         </div>
       </main>
-    </PayPalScriptProvider>
   );
 }
