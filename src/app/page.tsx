@@ -676,7 +676,8 @@ ${result.navigationScript}
           {agreedToTerms ? (
             <PayPalButtons
               createOrder={async (data, actions) => {
-                const response = await fetch('/api/paypal/create-order', {
+                // First create internal order
+                const internalResponse = await fetch('/api/create-order', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({
@@ -685,13 +686,24 @@ ${result.navigationScript}
                     brokeAgreement,
                     desiredResolution,
                     previousAttempts,
-                    theirPerspective,
-                    evidenceFiles: evidenceFiles.map(f => ({ name: f.name, size: f.size, type: f.type }))
+                    theirPerspective
                   })
                 });
-                if (!response.ok) throw new Error('Failed to create order');
-                const order = await response.json();
-                return order.id;
+                if (!internalResponse.ok) throw new Error('Failed to create internal order');
+                const internalOrder = await internalResponse.json();
+
+                // Then create PayPal order
+                const paypalResponse = await fetch('/api/paypal/create-order', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    orderId: internalOrder.orderId,
+                    amount: '9.99'
+                  })
+                });
+                if (!paypalResponse.ok) throw new Error('Failed to create PayPal order');
+                const paypalOrder = await paypalResponse.json();
+                return paypalOrder.id;
               }}
               onApprove={async (data, actions) => {
                 const response = await fetch('/api/paypal/success', {
