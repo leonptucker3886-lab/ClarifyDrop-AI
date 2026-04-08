@@ -454,10 +454,7 @@ ${result.navigationScript}
                  <div className="mt-1 h-1 bg-red-500 rounded blur-[1px]"></div>
                </div>
              </div>
-           </div>
-           <p className="text-slate-400 text-sm mt-4 text-center">
-             Actual reports are detailed, factual, and include navigation scripts you can copy and use.
-           </p>
+            </div>
          </div>
 
          <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-lg mb-8">
