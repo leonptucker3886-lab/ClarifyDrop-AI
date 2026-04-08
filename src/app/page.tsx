@@ -420,7 +420,7 @@ ${result.navigationScript}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@email.com"
-              className="h-12 border-2 border-white/20 focus:border-white/40"
+              className="h-12 border-2 border-white/20 focus:border-white/40 text-white placeholder:text-white/60"
             />
           </div>
 
@@ -431,7 +431,7 @@ ${result.navigationScript}
               value={theirPerspective}
               onChange={(e) => setTheirPerspective(e.target.value)}
               placeholder="Describe or paste their side..."
-              className="mt-2 border-2 border-white/20 focus:border-white/40"
+              className="mt-2 border-2 border-white/20 focus:border-white/40 text-white placeholder:text-white/60"
             />
           </div>
 
@@ -442,7 +442,7 @@ ${result.navigationScript}
               value={brokeAgreement}
               onChange={(e) => setBrokeAgreement(e.target.value)}
               placeholder="If yes, describe the previous agreement or boundary that was broken. If no previous agreement existed, write 'No previous agreement or boundary was set.'"
-              className="mt-2 border-2 border-white/20 focus:border-white/40"
+              className="mt-2 border-2 border-white/20 focus:border-white/40 text-white placeholder:text-white/60"
             />
             <p className="text-slate-500 text-sm mt-1">
               If yes, describe the previous agreement or boundary that was broken. If no previous agreement existed, write &apos;No previous agreement or boundary was set.&apos;
@@ -455,7 +455,7 @@ ${result.navigationScript}
               rows={4}
               value={previousAttempts}
               onChange={(e) => setPreviousAttempts(e.target.value)}
-              className="mt-2 border-2 border-white/20 focus:border-white/40"
+              className="mt-2 border-2 border-white/20 focus:border-white/40 text-white placeholder:text-white/60"
             />
           </div>
 
