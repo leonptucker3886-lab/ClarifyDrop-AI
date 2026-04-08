@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -346,6 +347,11 @@ ${result.navigationScript}
     <main className="min-h-screen py-12 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
+          <div className="flex justify-center mb-8">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-4 rounded-full shadow-lg">
+              <Scale className="w-12 h-12 text-white" />
+            </div>
+          </div>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
             ClarityDrop AI – Stop the rewrite. Get the exact facts for $9.99.
           </h1>
