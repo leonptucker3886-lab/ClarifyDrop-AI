@@ -24,28 +24,22 @@ This service delivers instant factual analysis based only on submitted text. Onc
 const ClarityLogo = () => (
   <div className="flex items-center gap-4">
     <div className="relative w-16 h-16">
-      {/* Lightbulb base */}
-      <div className="w-10 h-12 bg-yellow-400 rounded-t-full mx-auto"></div>
-      {/* Lightbulb bottom */}
-      <div className="w-6 h-6 bg-yellow-400 rounded-b-full mx-auto"></div>
-      {/* Filament */}
-      <div className="absolute top-3 left-1/2 transform -translate-x-1/2 w-1 h-6 bg-black rounded-full"></div>
-      {/* Rays */}
-      <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-4 border-transparent border-t-yellow-300"></div>
+      {/* Brain left hemisphere */}
+      <div className="absolute left-0 top-1 w-7 h-10 bg-blue-500 rounded-l-full"></div>
+      {/* Brain right hemisphere */}
+      <div className="absolute right-0 top-1 w-7 h-10 bg-blue-500 rounded-r-full"></div>
+      {/* Brain stem */}
+      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-500 rounded-b-full"></div>
+      {/* Brain folds left */}
+      <div className="absolute top-3 left-1 w-1 h-5 bg-white rounded-full"></div>
+      <div className="absolute top-5 left-2 w-1 h-3 bg-white rounded-full"></div>
+      {/* Brain folds right */}
+      <div className="absolute top-3 right-1 w-1 h-5 bg-white rounded-full"></div>
+      <div className="absolute top-5 right-2 w-1 h-3 bg-white rounded-full"></div>
     </div>
     <div className="flex flex-col">
       <span className="text-white text-3xl font-bold tracking-tight" style={{ fontFamily: "'Dancing Script', cursive" }}>Clarity</span>
       <span className="text-blue-400 text-sm font-medium -mt-1">AI</span>
-    </div>
-    <div className="relative w-16 h-16">
-      {/* Lightbulb base */}
-      <div className="w-10 h-12 bg-yellow-400 rounded-t-full mx-auto"></div>
-      {/* Lightbulb bottom */}
-      <div className="w-6 h-6 bg-yellow-400 rounded-b-full mx-auto"></div>
-      {/* Filament */}
-      <div className="absolute top-3 left-1/2 transform -translate-x-1/2 w-1 h-6 bg-black rounded-full"></div>
-      {/* Rays */}
-      <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-4 border-transparent border-t-yellow-300"></div>
     </div>
   </div>
 );
