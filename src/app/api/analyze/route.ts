@@ -30,9 +30,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await processWithGrok(order.yourPerspective, order.theirPerspective);
+    const orderData = {
+      email: order.email,
+      yourPerspective: order.yourPerspective,
+      discussedItems: order.discussedItems || "",
+      desiredResolution: order.desiredResolution || "",
+      previousAttempts: order.previousAttempts || "",
+      theirPerspective: order.theirPerspective || ""
+    };
 
-    await sendReportEmail(order.email, order.yourPerspective, order.theirPerspective, result);
+    const result = await processWithGrok(orderData);
+
+    await sendReportEmail(order.email, orderData, result);
 
     order.status = "completed";
     orders.set(orderId, order);

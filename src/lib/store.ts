@@ -2,6 +2,9 @@ export interface Order {
   id: string;
   email: string;
   yourPerspective: string;
+  discussedItems: string;
+  desiredResolution: string;
+  previousAttempts: string;
   theirPerspective: string;
   status: "pending" | "paid" | "completed";
   paypalOrderId?: string;
@@ -14,6 +17,8 @@ export interface AnalysisResult {
   summary: string;
   navigationScript: string;
   solo_note?: string;
+  resolution_gaps?: string[];
+  perception_gaps?: string[];
 }
 
 export const orders = new Map<string, Order>();

@@ -5,11 +5,11 @@ import { orders } from "@/lib/store";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, yourPerspective, theirPerspective } = body;
+    const { email, yourPerspective, discussedItems, desiredResolution, previousAttempts, theirPerspective } = body;
 
-    if (!email || !yourPerspective || !theirPerspective) {
+    if (!email || !yourPerspective) {
       return NextResponse.json(
-        { error: "All fields are required" },
+        { error: "Email and your perspective are required" },
         { status: 400 }
       );
     }
@@ -19,7 +19,10 @@ export async function POST(request: NextRequest) {
       id: orderId,
       email,
       yourPerspective,
-      theirPerspective,
+      discussedItems: discussedItems || "",
+      desiredResolution: desiredResolution || "",
+      previousAttempts: previousAttempts || "",
+      theirPerspective: theirPerspective || "",
       status: "pending" as const,
       createdAt: Date.now(),
     };

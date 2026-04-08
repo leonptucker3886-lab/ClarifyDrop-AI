@@ -12,6 +12,8 @@ interface AnalysisResult {
   summary: string;
   navigationScript: string;
   solo_note?: string;
+  resolution_gaps?: string[];
+  perception_gaps?: string[];
 }
 
 const GROK_SYSTEM_PROMPT = `You are a precise, black-and-white factual analyzer. Your job is to identify where two people agree and where they disagree, without emotional language or speculation.
@@ -32,6 +34,12 @@ Output format:
       "explanation": "The factual difference in 1-2 sentences"
     }
   ],
+  "perception_gaps": [
+    "Where perceptions differ about events, timelines, or context"
+  ],
+  "resolution_gaps": [
+    "Where desired outcomes or resolutions conflict"
+  ],
   "summary": "2-3 sentence summary of the situation - just the facts, no opinion",
   "navigationScript": "Specific, actionable 3-step script for addressing this. No fluff. Direct instructions.",
   "solo_note": "Optional: note if both perspectives appear to be from the same submitter"
@@ -44,9 +52,21 @@ Rules:
 - Be harsh on discrepancies - call them exactly what they are
 - The navigation script should be specific conversation points or actions, not therapy
 - Analyze writing style and language patterns: if both perspectives use similar vocabulary, sentence structures, or phrasing, note this in solo_note
+- Analyze the "discussed items" field to identify what was agreed upon vs what is being disputed
+- Analyze the "desired resolution" field to identify resolution gaps
+- Analyze "previous attempts" to identify what has already been tried
 `;
 
-export async function processWithGrok(yourPerspective: string, theirPerspective: string): Promise<AnalysisResult> {
+interface OrderData {
+  email: string;
+  yourPerspective: string;
+  discussedItems: string;
+  desiredResolution: string;
+  previousAttempts: string;
+  theirPerspective: string;
+}
+
+export async function processWithGrok(orderData: OrderData): Promise<AnalysisResult> {
   const xaiApiKey = process.env.XAI_API_KEY;
   
   if (!xaiApiKey) {
@@ -55,13 +75,29 @@ export async function processWithGrok(yourPerspective: string, theirPerspective:
 
   const userPrompt = `ANALYZE THIS DISPUTE:
 
-YOUR VERSION:
-${yourPerspective}
+YOUR FULL PERSPECTIVE:
+${orderData.yourPerspective}
 
-THEIR VERSION:
-${theirPerspective}
+WHAT WAS DISCUSSED OR AGREED UPON:
+${orderData.discussedItems}
 
-Identify exact agreements and exact discrepancies. Be precise. Check if both versions appear to be written by the same person (look for similar writing style, vocabulary, phrasing).`;
+DESIRED RESOLUTION (WHAT YOU WANT):
+${orderData.desiredResolution}
+
+PREVIOUS ATTEMPTS TO RESOLVE:
+${orderData.previousAttempts}
+
+OTHER PERSON'S VERSION:
+${orderData.theirPerspective}
+
+Identify:
+1. Exact agreements on what was discussed
+2. Exact discrepancies in what happened/perceived
+3. Perception gaps (how each person sees the situation differently)
+4. Resolution gaps (where desired outcomes conflict)
+5. What has been tried before
+
+Be precise and factual.`;
 
   const response = await fetch("https://api.x.ai/v1/chat/completions", {
     method: "POST",
@@ -106,6 +142,8 @@ Identify exact agreements and exact discrepancies. Be precise. Check if both ver
       summary: result.summary || "",
       navigationScript: result.navigationScript || "",
       solo_note: result.solo_note || undefined,
+      resolution_gaps: result.resolution_gaps || [],
+      perception_gaps: result.perception_gaps || [],
     };
   } catch (parseError) {
     throw new Error("Failed to parse Grok response");
@@ -114,8 +152,7 @@ Identify exact agreements and exact discrepancies. Be precise. Check if both ver
 
 export async function sendReportEmail(
   email: string,
-  yourPerspective: string,
-  theirPerspective: string,
+  orderData: OrderData,
   result: AnalysisResult
 ): Promise<void> {
   const resendApiKey = process.env.RESEND_API_KEY;
@@ -133,7 +170,19 @@ export async function sendReportEmail(
   </div>
   ` : "";
 
-  const soloNoteText = result.solo_note ? `\nNOTE: ${result.solo_note}\n` : "";
+  const perceptionGapsHtml = result.perception_gaps && result.perception_gaps.length > 0 ? `
+  <h2 style="font-size: 18px; font-weight: 600; margin-top: 24px; margin-bottom: 12px; color: #ea580c;">Perception Gaps (${result.perception_gaps.length})</h2>
+  <ul style="margin: 0; padding-left: 20px;">
+    ${result.perception_gaps.map(g => `<li style="margin-bottom: 8px; color: #ea580c;">${g}</li>`).join("")}
+  </ul>
+  ` : "";
+
+  const resolutionGapsHtml = result.resolution_gaps && result.resolution_gaps.length > 0 ? `
+  <h2 style="font-size: 18px; font-weight: 600; margin-top: 24px; margin-bottom: 12px; color: #8b5cf6;">Resolution Gaps (${result.resolution_gaps.length})</h2>
+  <ul style="margin: 0; padding-left: 20px;">
+    ${result.resolution_gaps.map(g => `<li style="margin-bottom: 8px; color: #8b5cf6;">${g}</li>`).join("")}
+  </ul>
+  ` : "";
 
   const htmlContent = `
 <!DOCTYPE html>
@@ -151,6 +200,8 @@ export async function sendReportEmail(
     .label { font-size: 12px; color: #64748b; text-transform: uppercase; font-weight: 600; }
     .script { background: #f1f5f9; padding: 16px; border-radius: 8px; white-space: pre-wrap; }
     .solo-note { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; margin-bottom: 24px; }
+    .perception-gaps { color: #ea580c; }
+    .resolution-gaps { color: #8b5cf6; }
     ul { margin: 0; padding-left: 20px; }
     li { margin-bottom: 8px; }
     .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b; }
@@ -164,6 +215,10 @@ export async function sendReportEmail(
 
   <h2>Summary</h2>
   <div class="summary">${result.summary}</div>
+
+  ${perceptionGapsHtml}
+
+  ${resolutionGapsHtml}
 
   ${result.agreements.length > 0 ? `
   <h2>Where You Agree (${result.agreements.length})</h2>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
 
 interface AnalysisResult {
   agreements: string[];
@@ -9,9 +8,11 @@ interface AnalysisResult {
   summary: string;
   navigationScript: string;
   solo_note?: string;
+  resolution_gaps?: string[];
+  perception_gaps?: string[];
 }
 
-const TERMS_TEXT = `This is a one-time digital purchase of an AI-generated report. No refunds. Payment funds development of larger conflict-management tools. Data is deleted after 24 hours. Not therapy or legal advice.
+const TERMS_TEXT = `This is a one-time digital purchase of an AI-generated factual report. No refunds. Payment supports development of larger conflict-management tools. Data deleted after 24 hours. Not therapy or legal advice.
 
 This service delivers instant factual analysis based only on submitted text. Once the report is generated and emailed, the purchase is final.`;
 
@@ -19,6 +20,9 @@ export default function Home() {
   const [step, setStep] = useState<"form" | "processing" | "result">("form");
   const [email, setEmail] = useState("");
   const [yourPerspective, setYourPerspective] = useState("");
+  const [discussedItems, setDiscussedItems] = useState("");
+  const [desiredResolution, setDesiredResolution] = useState("");
+  const [previousAttempts, setPreviousAttempts] = useState("");
   const [theirPerspective, setTheirPerspective] = useState("");
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState("");
@@ -86,10 +90,19 @@ export default function Home() {
     setStep("processing");
 
     try {
+      const orderData = {
+        email,
+        yourPerspective,
+        discussedItems: discussedItems || "",
+        desiredResolution: desiredResolution || "",
+        previousAttempts: previousAttempts || "",
+        theirPerspective: theirPerspective || ""
+      };
+
       const response = await fetch("/api/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, yourPerspective, theirPerspective: theirPerspective || "" }),
+        body: JSON.stringify(orderData),
       });
 
       const data = await response.json();
@@ -168,6 +181,40 @@ export default function Home() {
             </div>
             <p className="text-slate-300 whitespace-pre-wrap">{result.summary}</p>
           </div>
+
+          {result.perception_gaps && result.perception_gaps.length > 0 && (
+            <div className="card p-6 mb-6 section-discrepancy">
+              <h2 className="text-lg font-semibold text-orange-400 mb-4">
+                Perception Gaps
+                <span className="badge-discrepancy ml-2">{result.perception_gaps.length}</span>
+              </h2>
+              <ul className="space-y-3">
+                {result.perception_gaps.map((gap, index) => (
+                  <li key={index} className="text-orange-300 flex items-start gap-2">
+                    <span className="text-orange-400 mt-1">○</span>
+                    {gap}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {result.resolution_gaps && result.resolution_gaps.length > 0 && (
+            <div className="card p-6 mb-6" style={{ borderLeft: "4px solid #8b5cf6" }}>
+              <h2 className="text-lg font-semibold text-purple-400 mb-4">
+                Resolution Gaps
+                <span className="bg-purple-500 text-white px-2 py-0.5 rounded text-xs font-semibold ml-2">{result.resolution_gaps.length}</span>
+              </h2>
+              <ul className="space-y-3">
+                {result.resolution_gaps.map((gap, index) => (
+                  <li key={index} className="text-purple-300 flex items-start gap-2">
+                    <span className="text-purple-400 mt-1">◆</span>
+                    {gap}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {result.agreements.length > 0 && (
             <div className="card p-6 mb-6 section-agreement">
@@ -251,13 +298,16 @@ export default function Home() {
             <button
               onClick={() => {
                 const soloNote = result.solo_note ? `\nNOTE: ${result.solo_note}\n` : "";
+                const resolutionGaps = result.resolution_gaps?.length ? `\nRESOLUTION GAPS (${result.resolution_gaps.length})\n${result.resolution_gaps.map((g, i) => `${i + 1}. ${g}`).join("\n")}\n` : "";
+                const perceptionGaps = result.perception_gaps?.length ? `\nPERCEPTION GAPS (${result.perception_gaps.length})\n${result.perception_gaps.map((g, i) => `${i + 1}. ${g}`).join("\n")}\n` : "";
                 const content = `
 ClarityDrop AI Report
 ====================
 ${soloNote}
 SUMMARY
 ${result.summary}
-
+${resolutionGaps}
+${perceptionGaps}
 AGREEMENTS (${result.agreements.length})
 ${result.agreements.map((a, i) => `${i + 1}. ${a}`).join("\n")}
 
@@ -300,10 +350,16 @@ ${result.navigationScript}
           </p>
         </div>
 
+        <div className="bg-slate-800/50 border border-slate-700 p-4 rounded-lg mb-6">
+          <p className="text-slate-300 text-sm">
+            Provide complete details for a more precise report showing exact discrepancies in timelines, events, discussed items, and desired resolutions.
+          </p>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              Your email
+              Email
             </label>
             <input
               type="email"
@@ -316,31 +372,64 @@ ${result.navigationScript}
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              Your perspective – be as detailed as you want
+              Your full perspective – be as detailed and factual as possible
             </label>
             <textarea
               value={yourPerspective}
               onChange={(e) => setYourPerspective(e.target.value)}
-              className="input-field min-h-[150px]"
+              className="input-field min-h-[120px]"
               placeholder="What happened, from your point of view..."
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              Other person&apos;s version (paste texts or summary)
+              What exactly was discussed or agreed upon?
+            </label>
+            <textarea
+              value={discussedItems}
+              onChange={(e) => setDiscussedItems(e.target.value)}
+              className="input-field min-h-[80px]"
+              placeholder="Specific topics, conversations, agreements..."
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              What resolution or change do you want moving forward? Be specific and factual.
+            </label>
+            <textarea
+              value={desiredResolution}
+              onChange={(e) => setDesiredResolution(e.target.value)}
+              className="input-field min-h-[80px]"
+              placeholder="What outcome are you seeking?"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              Any previous attempts to resolve this? What was said?
+            </label>
+            <textarea
+              value={previousAttempts}
+              onChange={(e) => setPreviousAttempts(e.target.value)}
+              className="input-field min-h-[80px]"
+              placeholder="Previous conversations, negotiations..."
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              Other person&apos;s version
             </label>
             <textarea
               value={theirPerspective}
               onChange={(e) => setTheirPerspective(e.target.value)}
-              className="input-field min-h-[150px]"
+              className="input-field min-h-[100px]"
               placeholder="Their version of events..."
             />
             <p className="text-amber-400 text-xs mt-2">
-              If the other person is not filling this out themselves, describe their side as accurately as possible by putting yourself in their shoes. Be factual. If this description is incomplete or inaccurate, the report discrepancies and navigation scripts will be off.
-            </p>
-            <p className="text-slate-500 text-xs mt-1">
-              More complete and neutral description = more accurate report.
+              If they are not filling this out, describe their side as accurately as possible by putting yourself in their shoes. Be factual. If this description is incomplete or inaccurate, the report will be off.
             </p>
           </div>
 
@@ -354,7 +443,7 @@ ${result.navigationScript}
                 className="mt-1 w-4 h-4 accent-blue-500"
               />
               <label htmlFor="terms" className="text-sm text-slate-300">
-                I agree this is a one-time digital purchase of an AI-generated report. No refunds. Payment funds development of larger conflict-management tools. Data is deleted after 24 hours. Not therapy or legal advice.{" "}
+                I agree this is a one-time digital purchase of an AI-generated factual report. No refunds. Payment supports development of larger conflict-management tools. Data deleted after 24 hours. Not therapy or legal advice.{" "}
                 <button
                   type="button"
                   onClick={() => setShowTerms(!showTerms)}
