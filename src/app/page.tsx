@@ -393,6 +393,36 @@ ${result.navigationScript}
         </div>
 
         <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-lg mb-8">
+          <h2 className="text-2xl font-bold text-white mb-4">What you get for $9.99</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ul className="space-y-3">
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-1">✓</span>
+                <span className="text-slate-300">Exact factual discrepancies from submitted text only</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-1">✓</span>
+                <span className="text-slate-300">Clear agreements and mismatches (including previous agreements or boundaries)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-1">✓</span>
+                <span className="text-slate-300">Navigation scripts you can copy-paste</span>
+              </li>
+            </ul>
+            <ul className="space-y-3">
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-1">✓</span>
+                <span className="text-slate-300">Resolution gaps identified</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-1">✓</span>
+                <span className="text-slate-300">Full report delivered by email + PDF download</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-lg mb-8">
           <p className="text-slate-300 text-sm">
             Provide complete details for a more precise report. More complete and neutral input = more accurate factual output.
           </p>
@@ -412,24 +442,24 @@ ${result.navigationScript}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="perspective" className="text-slate-300">Your full perspective – be as detailed and factual as possible</Label>
+            <Label htmlFor="perspective" className="text-slate-300 text-lg font-semibold">Your full perspective – be as detailed and factual as possible</Label>
             <Textarea
               id="perspective"
               value={yourPerspective}
               onChange={(e) => setYourPerspective(e.target.value)}
               placeholder="What happened, from your point of view..."
-              className="min-h-[120px]"
+              className="min-h-[180px] text-base"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="agreement" className="text-slate-300">Did this break a previous agreement or boundary?</Label>
+            <Label htmlFor="agreement" className="text-slate-300 text-lg font-semibold">Did this break a previous agreement or boundary?</Label>
             <Textarea
               id="agreement"
               value={brokeAgreement}
               onChange={(e) => setBrokeAgreement(e.target.value)}
               placeholder="Describe the previous agreement or boundary..."
-              className="min-h-[100px]"
+              className="min-h-[140px] text-base"
             />
             <p className="text-slate-500 text-sm mt-1">
               If yes, describe the previous agreement or boundary that was broken. If no previous agreement existed, write &apos;No previous agreement or boundary was set.&apos;
@@ -437,35 +467,35 @@ ${result.navigationScript}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="resolution" className="text-slate-300">What resolution or change do you want moving forward? Be specific and factual.</Label>
+            <Label htmlFor="resolution" className="text-slate-300 text-lg font-semibold">What resolution or change do you want moving forward? Be specific and factual.</Label>
             <Textarea
               id="resolution"
               value={desiredResolution}
               onChange={(e) => setDesiredResolution(e.target.value)}
               placeholder="What outcome are you seeking?"
-              className="min-h-[100px]"
+              className="min-h-[140px] text-base"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="attempts" className="text-slate-300">Any previous attempts to resolve this? What was said?</Label>
+            <Label htmlFor="attempts" className="text-slate-300 text-lg font-semibold">Any previous attempts to resolve this? What was said?</Label>
             <Textarea
               id="attempts"
               value={previousAttempts}
               onChange={(e) => setPreviousAttempts(e.target.value)}
               placeholder="Previous conversations, negotiations..."
-              className="min-h-[100px]"
+              className="min-h-[140px] text-base"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="their-perspective" className="text-slate-300">Other person&apos;s version</Label>
+            <Label htmlFor="their-perspective" className="text-slate-300 text-lg font-semibold">Other person&apos;s version</Label>
             <Textarea
               id="their-perspective"
               value={theirPerspective}
               onChange={(e) => setTheirPerspective(e.target.value)}
               placeholder="Their version of events..."
-              className="min-h-[120px]"
+              className="min-h-[160px] text-base"
             />
             <p className="text-amber-400 text-sm mt-2 font-bold">
               If the other person is not filling this out themselves, describe their side as accurately as possible by putting yourself in their shoes. Be factual. If this description is incomplete or inaccurate, the report discrepancies and navigation scripts will be off.
