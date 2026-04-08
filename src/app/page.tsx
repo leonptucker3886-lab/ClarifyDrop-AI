@@ -451,49 +451,50 @@ ${result.navigationScript}
                 I agree this is a one-time digital purchase of an AI-generated factual report. No refunds. Payment supports development of larger conflict-management tools. Data deleted after 24 hours. Not therapy or legal advice.
               </Label>
             </div>
-            <div style={{ pointerEvents: !agreedToTerms ? 'none' : 'auto', opacity: !agreedToTerms ? 0.5 : 1 }}>
-              <PayPalButtons
-                createOrder={async (data, actions) => {
-                  const response = await fetch('/api/create-order', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      email,
-                      yourPerspective,
-                      brokeAgreement,
-                      desiredResolution,
-                      previousAttempts,
-                      theirPerspective
-                    })
-                  });
-                  if (!response.ok) throw new Error('Failed to create internal order');
-                  const order = await response.json();
+            <PayPalButtons
+            createOrder={async (data, actions) => {
+              if (!agreedToTerms) {
+                throw new Error('You must agree to the terms to proceed.');
+              }
+              const response = await fetch('/api/create-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  email,
+                  yourPerspective,
+                  brokeAgreement,
+                  desiredResolution,
+                  previousAttempts,
+                  theirPerspective
+                })
+              });
+              if (!response.ok) throw new Error('Failed to create internal order');
+              const order = await response.json();
 
-                  const paypalResponse = await fetch('/api/paypal/create-order', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      orderId: order.orderId,
-                      amount: '9.99'
-                    })
-                  });
-                  if (!paypalResponse.ok) throw new Error('Failed to create PayPal order');
-                  const paypalOrder = await paypalResponse.json();
-                  return paypalOrder.id;
-                }}
-                onApprove={async (data, actions) => {
-                  const response = await fetch('/api/paypal/success', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ orderId: data.orderID })
-                  });
-                  if (!response.ok) throw new Error('Payment failed');
-                  setStep('processing');
-                  setOrderId(data.orderID);
-                }}
-                style={{ color: 'blue', shape: 'rect', label: 'paypal' }}
-              />
-            </div>
+              const paypalResponse = await fetch('/api/paypal/create-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  orderId: order.orderId,
+                  amount: '9.99'
+                })
+              });
+              if (!paypalResponse.ok) throw new Error('Failed to create PayPal order');
+              const paypalOrder = await paypalResponse.json();
+              return paypalOrder.id;
+            }}
+            onApprove={async (data, actions) => {
+              const response = await fetch('/api/paypal/success', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderId: data.orderID })
+              });
+              if (!response.ok) throw new Error('Payment failed');
+              setStep('processing');
+              setOrderId(data.orderID);
+            }}
+            style={{ color: 'blue', shape: 'rect', label: 'paypal' }}
+          />
           </div>
 
           <div className="text-center mt-12 p-6 bg-slate-900/50 rounded-lg border border-slate-700">
