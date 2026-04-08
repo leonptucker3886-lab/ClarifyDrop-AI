@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 interface AnalysisResult {
   agreements: string[];
@@ -389,7 +390,8 @@ ${result.navigationScript}
   }
 
   return (
-    <main className="min-h-screen py-12 px-4">
+    <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "", currency: "USD" }}>
+      <main className="min-h-screen py-12 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
           <div className="flex justify-center mb-10">
@@ -434,27 +436,22 @@ ${result.navigationScript}
          </div>
 
           <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-lg mb-8">
-            <div className="flex justify-center">
-             <div className="relative bg-gray-800 border border-gray-600 rounded-lg p-4 max-w-lg w-full" style={{ aspectRatio: '16/10' }}>
-               {/* Laptop frame */}
-               <div className="absolute top-0 left-0 right-0 h-2 bg-gray-700 rounded-t-lg"></div>
-               <div className="absolute bottom-0 left-0 right-0 h-3 bg-gray-700 rounded-b-lg"></div>
-               {/* Screen content */}
-               <div className="pt-2">
-                 <div className="text-xs text-gray-400 mb-2 font-mono">ClarityDrop AI Analysis Report</div>
-                 <div className="space-y-1">
-                   <div className="h-2 bg-gray-600 rounded blur-[1px]"></div>
-                   <div className="h-2 bg-gray-600 rounded blur-[1px]"></div>
-                   <div className="h-2 bg-gray-600 rounded blur-[1px]"></div>
-                   <div className="h-2 bg-gray-600 rounded blur-[1px]"></div>
-                   <div className="h-2 bg-gray-600 rounded blur-[1px]"></div>
-                 </div>
-                 <div className="mt-3 text-xs text-gray-500 font-mono">Discrepancies Found: 3</div>
-                 <div className="mt-1 h-1 bg-red-500 rounded blur-[1px]"></div>
-               </div>
-             </div>
+            <h3 className="text-xl font-bold text-white mb-4">Sample Report Preview</h3>
+            <div className="space-y-4">
+              <div className="bg-orange-900/20 border border-orange-500 p-4 rounded">
+                <h4 className="text-orange-400 font-semibold mb-2">Discrepancies</h4>
+                <p className="text-slate-300 text-sm">Timeline inconsistencies, conflicting statements, broken agreements</p>
+              </div>
+              <div className="bg-green-900/20 border border-green-500 p-4 rounded">
+                <h4 className="text-green-400 font-semibold mb-2">Agreements</h4>
+                <p className="text-slate-300 text-sm">Shared facts, mutual understandings, aligned perspectives</p>
+              </div>
+              <div className="bg-blue-900/20 border border-blue-500 p-4 rounded">
+                <h4 className="text-blue-400 font-semibold mb-2">Navigation Scripts</h4>
+                <p className="text-slate-300 text-sm">Actionable phrases and approaches to resolve the conflict</p>
+              </div>
             </div>
-         </div>
+          </div>
 
          <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-lg mb-8">
           <p className="text-slate-300 text-sm">
@@ -676,14 +673,39 @@ ${result.navigationScript}
             </div>
           )}
 
-          <Button
-            type="submit"
-            size="lg"
-            className="w-full text-lg py-6"
-            disabled={!agreedToTerms}
-          >
-            Pay $9.99 and Get the Report
-          </Button>
+          <div style={{ pointerEvents: !agreedToTerms ? 'none' : 'auto', opacity: !agreedToTerms ? 0.5 : 1 }}>
+            <PayPalButtons
+              createOrder={async (data, actions) => {
+                const response = await fetch('/api/paypal/create-order', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    email,
+                    yourPerspective,
+                    brokeAgreement,
+                    desiredResolution,
+                    previousAttempts,
+                    theirPerspective,
+                    evidenceFiles: evidenceFiles.map(f => ({ name: f.name, size: f.size, type: f.type }))
+                  })
+                });
+                if (!response.ok) throw new Error('Failed to create order');
+                const order = await response.json();
+                return order.id;
+              }}
+              onApprove={async (data, actions) => {
+                const response = await fetch('/api/paypal/success', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ orderId: data.orderID })
+                });
+                if (!response.ok) throw new Error('Payment failed');
+                setStep('processing');
+                setOrderId(data.orderID);
+              }}
+              style={{ layout: 'horizontal', color: 'blue', shape: 'rect', label: 'paypal' }}
+            />
+          </div>
         </form>
 
         <div className="text-center mt-12 p-6 bg-slate-900/50 rounded-lg border border-slate-700">
@@ -702,5 +724,6 @@ ${result.navigationScript}
         </div>
       </div>
     </main>
+    </PayPalScriptProvider>
   );
 }
