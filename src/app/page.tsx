@@ -694,7 +694,7 @@ ${result.navigationScript}
             <br />
             2. Use this link: https://clarify-drop-ai.vercel.app/?ref=YOURCODE
             <br />
-            3. Email leonptucker@gmail.com with your code and PayPal email to get paid monthly.
+            3. Email leonptucker3886@gmail.com with your code and PayPal email to get paid monthly.
             <br />
             <br />
             No account or dashboard needed — simple and manual tracking.
