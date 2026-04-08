@@ -374,7 +374,7 @@ ${result.navigationScript}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="your@email.com"
                   required
-                  className="mt-1"
+                  className="mt-1 border-white"
                 />
               </div>
               <div>
@@ -386,7 +386,7 @@ ${result.navigationScript}
                   placeholder="Describe your perspective in detail..."
                   rows={8}
                   required
-                  className="mt-1"
+                  className="mt-1 border-white"
                 />
               </div>
               <div>
@@ -397,7 +397,7 @@ ${result.navigationScript}
                   onChange={(e) => setBrokeAgreement(e.target.value)}
                   placeholder="If yes, describe the previous agreement or boundary that was broken. If no previous agreement existed, write 'No previous agreement or boundary was set.'"
                   rows={4}
-                  className="mt-1"
+                  className="mt-1 border-white"
                 />
               </div>
               <div>
@@ -408,7 +408,7 @@ ${result.navigationScript}
                   onChange={(e) => setDesiredResolution(e.target.value)}
                   placeholder="Describe your desired outcome..."
                   rows={4}
-                  className="mt-1"
+                  className="mt-1 border-white"
                 />
               </div>
               <div>
@@ -419,7 +419,7 @@ ${result.navigationScript}
                   onChange={(e) => setPreviousAttempts(e.target.value)}
                   placeholder="Describe past resolution attempts..."
                   rows={4}
-                  className="mt-1"
+                  className="mt-1 border-white"
                 />
               </div>
               <div>
@@ -430,7 +430,7 @@ ${result.navigationScript}
                   onChange={(e) => setTheirPerspective(e.target.value)}
                   placeholder="Describe their side as accurately as possible..."
                   rows={5}
-                  className="mt-1"
+                  className="mt-1 border-white"
                 />
                 <p className="text-orange-400 font-bold text-sm mt-2">
                   If the other person is not filling this out themselves, describe their side as accurately as possible by putting yourself in their shoes. Be factual. If this description is incomplete or inaccurate, the report discrepancies and navigation scripts will be off.
