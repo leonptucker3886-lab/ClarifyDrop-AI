@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ClarityDrop AI - Stop the rewrite. See the facts.",
+  title: "ClarityDrop AI – Stop the rewrite. Get the exact facts for $9.99.",
   description: "Drop your side. Get the exact discrepancies and what to do next.",
 };
 

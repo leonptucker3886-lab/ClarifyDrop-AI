@@ -394,20 +394,11 @@ ${result.navigationScript}
             <ClarityLogo />
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-8 leading-tight">
-            Stop the rewrite
-            <br />
-            Stop this fight
-            <br />
-            <div className="text-center">
-              <span className="text-yellow-400 text-5xl">🛑</span>
-            </div>
+            ClarityDrop AI – Stop the rewrite. Get the exact facts for $9.99.
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-            One-time payment of $9.99. Submit your conflict details. Receive a neutral, factual analysis with exact discrepancies, agreements, and actionable navigation scripts.
+            One-time payment. Drop your side of the conflict in detail. The AI delivers a strictly factual report that shows real discrepancies in timelines, events, previous agreements or boundaries, and framing — based only on what you submit. No opinions. No sides taken. You receive clear navigation scripts you can copy and use, plus the full report by email and PDF. Data is automatically deleted after 24 hours.
           </p>
-          <div className="mt-6 text-lg text-slate-400">
-            Data deleted after 24 hours. No therapy or legal advice.
-          </div>
         </div>
 
         <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-lg mb-8">
@@ -461,10 +452,10 @@ ${result.navigationScript}
           <div className="space-y-2">
             <Label htmlFor="perspective" className="text-slate-300 text-lg font-semibold">Your full perspective – be as detailed and factual as possible</Label>
             <Textarea
-              rows={5}
-              value={theirPerspective}
-              onChange={(e) => setTheirPerspective(e.target.value)}
-              placeholder="Describe or paste their side..."
+              rows={8}
+              value={yourPerspective}
+              onChange={(e) => setYourPerspective(e.target.value)}
+              placeholder="Describe your side of the conflict in detail..."
               className="mt-2 border-2 border-white/20 focus:border-white/40 text-white placeholder:text-white/60"
             />
           </div>
@@ -487,8 +478,9 @@ ${result.navigationScript}
             <Label htmlFor="resolution" className="text-slate-300 text-lg font-semibold">What resolution or change do you want moving forward? Be specific and factual.</Label>
             <Textarea
               rows={4}
-              value={previousAttempts}
-              onChange={(e) => setPreviousAttempts(e.target.value)}
+              value={desiredResolution}
+              onChange={(e) => setDesiredResolution(e.target.value)}
+              placeholder="Be specific about what you want to change or resolve..."
               className="mt-2 border-2 border-white/20 focus:border-white/40 text-white placeholder:text-white/60"
             />
           </div>
@@ -499,7 +491,7 @@ ${result.navigationScript}
               id="attempts"
               value={previousAttempts}
               onChange={(e) => setPreviousAttempts(e.target.value)}
-              placeholder="Previous conversations, negotiations..."
+              placeholder="Describe any previous attempts to resolve this conflict and what was said..."
               className="min-h-[140px] text-base border-2 border-white/20 focus:border-white/40 text-white placeholder:text-white/60"
             />
           </div>
