@@ -38,11 +38,8 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     // Apply theme to document
     const root = document.documentElement;
 
-    // Remove all theme classes
-    root.classList.remove("theme-dark", "theme-light", "theme-blue", "theme-green");
-
-    // Add current theme class
-    root.classList.add(`theme-${theme}`);
+    // Set data-theme attribute for theme switching
+    root.setAttribute("data-theme", theme);
 
     // Save to localStorage
     localStorage.setItem("claritydrop-theme", theme);
