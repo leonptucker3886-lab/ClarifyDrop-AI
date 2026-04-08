@@ -673,7 +673,7 @@ ${result.navigationScript}
             </div>
           )}
 
-          {agreedToTerms ? (
+          <div style={{ pointerEvents: !agreedToTerms ? 'none' : 'auto', opacity: !agreedToTerms ? 0.5 : 1 }}>
             <PayPalButtons
               createOrder={async (data, actions) => {
                 // First create internal order
@@ -717,11 +717,7 @@ ${result.navigationScript}
               }}
               style={{ color: 'blue', shape: 'rect', label: 'paypal' }}
             />
-          ) : (
-            <div className="text-center text-slate-400 py-4">
-              Please agree to the terms to proceed with payment.
-            </div>
-          )}
+          </div>
         </form>
 
         <div className="text-center mt-12 p-6 bg-slate-900/50 rounded-lg border border-slate-700">
