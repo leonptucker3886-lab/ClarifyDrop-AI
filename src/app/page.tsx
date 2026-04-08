@@ -54,6 +54,7 @@ export default function Home() {
   const [orderId, setOrderId] = useState("");
   const [copyFeedback, setCopyFeedback] = useState<Record<string, string>>({});
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [paypalError, setPaypalError] = useState(false);
   const summaryRef = useRef<HTMLButtonElement>(null);
   const agreementsRef = useRef<HTMLButtonElement>(null);
   const navigationRef = useRef<HTMLButtonElement>(null);
@@ -453,7 +454,7 @@ ${result.navigationScript}
             {agreedToTerms ? (
               process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ? (
                 <PayPalScriptProvider options={{
-                  clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+                  clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '',
                   currency: 'USD',
                   intent: 'capture',
                   components: 'buttons',
@@ -489,17 +490,24 @@ ${result.navigationScript}
                     return paypalOrder.id;
                   }}
                   onApprove={async (data, actions) => {
-                    const response = await fetch('/api/paypal/success', {
+                    const response = await fetch('/api/paypal/capture', {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify({ orderId: data.orderID })
                     });
-                    if (!response.ok) throw new Error('Payment failed');
+                    if (!response.ok) throw new Error('Payment capture failed');
                     setStep('processing');
                     setOrderId(data.orderID);
                   }}
+                  onError={(err) => {
+                    console.error('PayPal error:', err);
+                    setPaypalError(true);
+                  }}
                   style={{ color: 'blue', shape: 'rect', label: 'paypal' }}
                 />
+                {paypalError && (
+                  <p className="text-red-400 mt-4">PayPal is having trouble loading. Try refreshing the page.</p>
+                )}
                 </PayPalScriptProvider>
               ) : (
                 <p className="text-red-400">PayPal not configured – check NEXT_PUBLIC_PAYPAL_CLIENT_ID in Vercel</p>
