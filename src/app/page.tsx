@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,6 +20,39 @@ interface AnalysisResult {
 const TERMS_TEXT = `This is a one-time digital purchase of an AI-generated factual report. No refunds. Payment supports development of larger conflict-management tools. Data deleted after 24 hours. Not therapy or legal advice.
 
 This service delivers instant factual analysis based only on submitted text. Once the report is generated and emailed, the purchase is final.`;
+
+const ClarityLogo = () => (
+  <svg
+    width="64"
+    height="64"
+    viewBox="0 0 64 64"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="text-white"
+  >
+    {/* Crystal/Diamond shape representing clarity */}
+    <path
+      d="M32 8L48 24L48 40L32 56L16 40L16 24Z"
+      stroke="currentColor"
+      strokeWidth="3"
+      fill="rgba(255,255,255,0.1)"
+    />
+    {/* Inner crystal facets */}
+    <path
+      d="M32 16L40 24L32 32L24 24Z"
+      stroke="currentColor"
+      strokeWidth="2"
+      fill="rgba(255,255,255,0.2)"
+    />
+    {/* Center highlight */}
+    <circle
+      cx="32"
+      cy="28"
+      r="2"
+      fill="currentColor"
+    />
+  </svg>
+);
 
 export default function Home() {
   const [step, setStep] = useState<"form" | "processing" | "result">("form");
@@ -349,7 +381,7 @@ ${result.navigationScript}
         <div className="text-center mb-12">
           <div className="flex justify-center mb-8">
             <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-4 rounded-full shadow-lg">
-              <Scale className="w-12 h-12 text-white" />
+              <ClarityLogo />
             </div>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
