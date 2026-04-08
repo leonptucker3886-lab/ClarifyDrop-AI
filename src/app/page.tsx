@@ -644,7 +644,7 @@ ${result.navigationScript}
                 id="terms"
                 checked={agreedToTerms}
                 onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
-                className="border-white"
+                className="border-white data-[state=checked]:bg-yellow-400 data-[state=checked]:border-yellow-400"
               />
               <div className="space-y-2">
                 <Label htmlFor="terms" className="text-sm text-slate-300 font-normal cursor-pointer">
