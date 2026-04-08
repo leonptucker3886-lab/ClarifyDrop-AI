@@ -537,6 +537,22 @@ ${result.navigationScript}
               </label>
             </div>
 
+            <div className="border-2 border-dashed border-white/20 rounded-lg p-6 text-center hover:border-white/30 transition-colors mt-4">
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                className="hidden"
+                id="evidence-upload-2"
+                onChange={handleFileChange}
+              />
+              <label htmlFor="evidence-upload-2" className="cursor-pointer">
+                <div className="text-4xl mb-2">📎</div>
+                <div className="text-white font-medium">Upload more evidence</div>
+                <div className="text-slate-400 text-sm mt-1">PNG, JPG, GIF up to 10MB</div>
+              </label>
+            </div>
+
             {evidenceFiles.length > 0 && (
               <div className="mt-4">
                 <div className="text-white text-sm font-medium mb-2">Uploaded Files:</div>
@@ -564,6 +580,7 @@ ${result.navigationScript}
                 id="terms"
                 checked={agreedToTerms}
                 onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
+                className="border-white"
               />
               <div className="space-y-2">
                 <Label htmlFor="terms" className="text-sm text-slate-300 font-normal cursor-pointer">
