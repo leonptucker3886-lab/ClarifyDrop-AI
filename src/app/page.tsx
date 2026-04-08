@@ -430,10 +430,37 @@ ${result.navigationScript}
                 <span className="text-slate-300">Full report emailed + PDF download</span>
               </li>
             </ul>
-          </div>
-        </div>
+           </div>
+         </div>
 
-        <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-lg mb-8">
+         <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-lg mb-8">
+           <h3 className="text-xl font-bold text-white mb-4">Sample Report Preview</h3>
+           <div className="flex justify-center">
+             <div className="relative bg-gray-800 border border-gray-600 rounded-lg p-4 max-w-lg w-full" style={{ aspectRatio: '16/10' }}>
+               {/* Laptop frame */}
+               <div className="absolute top-0 left-0 right-0 h-2 bg-gray-700 rounded-t-lg"></div>
+               <div className="absolute bottom-0 left-0 right-0 h-3 bg-gray-700 rounded-b-lg"></div>
+               {/* Screen content */}
+               <div className="pt-2">
+                 <div className="text-xs text-gray-400 mb-2 font-mono">ClarityDrop AI Analysis Report</div>
+                 <div className="space-y-1">
+                   <div className="h-2 bg-gray-600 rounded blur-[1px]"></div>
+                   <div className="h-2 bg-gray-600 rounded blur-[1px]"></div>
+                   <div className="h-2 bg-gray-600 rounded blur-[1px]"></div>
+                   <div className="h-2 bg-gray-600 rounded blur-[1px]"></div>
+                   <div className="h-2 bg-gray-600 rounded blur-[1px]"></div>
+                 </div>
+                 <div className="mt-3 text-xs text-gray-500 font-mono">Discrepancies Found: 3</div>
+                 <div className="mt-1 h-1 bg-red-500 rounded blur-[1px]"></div>
+               </div>
+             </div>
+           </div>
+           <p className="text-slate-400 text-sm mt-4 text-center">
+             Actual reports are detailed, factual, and include navigation scripts you can copy and use.
+           </p>
+         </div>
+
+         <div className="bg-slate-800/50 border border-slate-700 p-6 rounded-lg mb-8">
           <p className="text-slate-300 text-sm">
             Provide complete details for a more precise report. More complete and neutral input = more accurate factual output.
           </p>
