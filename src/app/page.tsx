@@ -50,6 +50,7 @@ export default function Home() {
   const [desiredResolution, setDesiredResolution] = useState("");
   const [previousAttempts, setPreviousAttempts] = useState("");
   const [theirPerspective, setTheirPerspective] = useState("");
+  const [evidenceFiles, setEvidenceFiles] = useState<File[]>([]);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState("");
   const [orderId, setOrderId] = useState("");
@@ -156,6 +157,28 @@ export default function Home() {
       setError(err instanceof Error ? err.message : "An error occurred");
       setStep("form");
     }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const validFiles = files.filter(file => {
+      const isImage = file.type.startsWith('image/');
+      const isUnderSize = file.size <= 10 * 1024 * 1024; // 10MB
+      return isImage && isUnderSize;
+    });
+
+    if (validFiles.length !== files.length) {
+      setError("Please only upload images under 10MB each.");
+      return;
+    }
+
+    if (evidenceFiles.length + validFiles.length > 5) {
+      setError("Maximum 5 images allowed.");
+      return;
+    }
+
+    setEvidenceFiles(prev => [...prev, ...validFiles]);
+    setError("");
   };
 
   const copyToClipboard = (text: string, key: string) => {
@@ -371,7 +394,11 @@ ${result.navigationScript}
             <ClarityLogo />
           </div>
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight">
-            Stop the rewrite. Get the exact facts.
+            Stop the rewrite.
+            <br />
+            <span className="text-yellow-400 text-6xl">☢️</span>
+            <br />
+            Real Answers.
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
             One-time payment of $9.99. Submit your conflict details. Receive a neutral, factual analysis with exact discrepancies, agreements, and actionable navigation scripts.
@@ -487,6 +514,48 @@ ${result.navigationScript}
             <p className="text-amber-400 text-sm mt-2 font-bold">
               If the other person is not filling this out themselves, describe their side as accurately as possible by putting yourself in their shoes. Be factual. If this description is incomplete or inaccurate, the report discrepancies and navigation scripts will be off.
             </p>
+          </div>
+
+          <div className="space-y-4 pt-6 border-t border-white/10">
+            <Label className="text-lg font-semibold text-white">Upload Evidence (Optional)</Label>
+            <p className="text-slate-400 text-sm">
+              Add screenshots, texts, emails, or other proof to support your perspective. Maximum 5 images, 10MB each.
+            </p>
+            <div className="border-2 border-dashed border-white/20 rounded-lg p-6 text-center hover:border-white/30 transition-colors">
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                className="hidden"
+                id="evidence-upload"
+                onChange={handleFileChange}
+              />
+              <label htmlFor="evidence-upload" className="cursor-pointer">
+                <div className="text-4xl mb-2">📎</div>
+                <div className="text-white font-medium">Click to upload evidence</div>
+                <div className="text-slate-400 text-sm mt-1">PNG, JPG, GIF up to 10MB</div>
+              </label>
+            </div>
+
+            {evidenceFiles.length > 0 && (
+              <div className="mt-4">
+                <div className="text-white text-sm font-medium mb-2">Uploaded Files:</div>
+                <div className="space-y-2">
+                  {evidenceFiles.map((file, index) => (
+                    <div key={index} className="flex items-center gap-2 bg-slate-800/50 rounded px-3 py-2">
+                      <span className="text-slate-300 text-sm">{file.name}</span>
+                      <span className="text-slate-500 text-xs">({(file.size / 1024 / 1024).toFixed(1)}MB)</span>
+                      <button
+                        onClick={() => setEvidenceFiles(prev => prev.filter((_, i) => i !== index))}
+                        className="text-red-400 hover:text-red-300 text-sm ml-auto"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="bg-slate-800 p-6 rounded-lg border border-slate-700 space-y-4">
