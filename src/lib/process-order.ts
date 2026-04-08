@@ -30,7 +30,7 @@ Output format:
   "discrepancies": [
     {
       "yourVersion": "What your side says happened",
-      "theirVersion": "What their side says happened", 
+      "theirVersion": "What their side says happened",
       "explanation": "The factual difference in 1-2 sentences"
     }
   ],
@@ -41,7 +41,7 @@ Output format:
     "Where desired outcomes or resolutions conflict"
   ],
   "summary": "2-3 sentence summary of the situation - just the facts, no opinion",
-  "navigationScript": "Specific, actionable 3-step script for addressing this. No fluff. Direct instructions.",
+  "navigationScript": "Specific, actionable 3-step script for addressing this. No fluff. Direct instructions. Consider whether this is a recurring issue and any violence involved.",
   "solo_note": "Optional: note if both perspectives appear to be from the same submitter"
 }
 
@@ -52,15 +52,17 @@ Rules:
 - Be harsh on discrepancies - call them exactly what they are
 - The navigation script should be specific conversation points or actions, not therapy
 - Analyze writing style and language patterns: if both perspectives use similar vocabulary, sentence structures, or phrasing, note this in solo_note
-- Analyze the "discussed items" field to identify what was agreed upon vs what is being disputed
+- Analyze whether this is a first-time or recurring conflict and include in navigation
+- Analyze any violence mentioned and include safety considerations in navigation
 - Analyze the "desired resolution" field to identify resolution gaps
-- Analyze "previous attempts" to identify what has already been tried
+- Analyze "previous attempts" to identify what has been tried
 `;
 
 interface OrderData {
   email: string;
   yourPerspective: string;
-  discussedItems: string;
+  firstTime: string;
+  violence: string;
   desiredResolution: string;
   previousAttempts: string;
   theirPerspective: string;
@@ -78,8 +80,11 @@ export async function processWithGrok(orderData: OrderData): Promise<AnalysisRes
 YOUR FULL PERSPECTIVE:
 ${orderData.yourPerspective}
 
-WHAT WAS DISCUSSED OR AGREED UPON:
-${orderData.discussedItems}
+IS THIS THE FIRST TIME THIS TOPIC HAS BEEN ARGUED ON:
+${orderData.firstTime}
+
+WAS THERE ANY VIOLENCE INVOLVED:
+${orderData.violence}
 
 DESIRED RESOLUTION (WHAT YOU WANT):
 ${orderData.desiredResolution}
@@ -96,8 +101,10 @@ Identify:
 3. Perception gaps (how each person sees the situation differently)
 4. Resolution gaps (where desired outcomes conflict)
 5. What has been tried before
+6. Whether this is a recurring issue
+7. Any violence or safety concerns
 
-Be precise and factual.`;
+Be precise and factual. Consider the context of whether this is a first-time or recurring conflict, and any violence involved.`;
 
   const response = await fetch("https://api.x.ai/v1/chat/completions", {
     method: "POST",

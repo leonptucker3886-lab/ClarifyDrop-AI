@@ -5,7 +5,7 @@ import { orders } from "@/lib/store";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, yourPerspective, discussedItems, desiredResolution, previousAttempts, theirPerspective } = body;
+    const { email, yourPerspective, firstTime, violence, desiredResolution, previousAttempts, theirPerspective } = body;
 
     if (!email || !yourPerspective) {
       return NextResponse.json(
@@ -19,7 +19,8 @@ export async function POST(request: NextRequest) {
       id: orderId,
       email,
       yourPerspective,
-      discussedItems: discussedItems || "",
+      firstTime: firstTime || "",
+      violence: violence || "",
       desiredResolution: desiredResolution || "",
       previousAttempts: previousAttempts || "",
       theirPerspective: theirPerspective || "",

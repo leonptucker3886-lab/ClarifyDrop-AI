@@ -20,7 +20,8 @@ export default function Home() {
   const [step, setStep] = useState<"form" | "processing" | "result">("form");
   const [email, setEmail] = useState("");
   const [yourPerspective, setYourPerspective] = useState("");
-  const [discussedItems, setDiscussedItems] = useState("");
+  const [firstTime, setFirstTime] = useState("");
+  const [violence, setViolence] = useState("");
   const [desiredResolution, setDesiredResolution] = useState("");
   const [previousAttempts, setPreviousAttempts] = useState("");
   const [theirPerspective, setTheirPerspective] = useState("");
@@ -93,7 +94,8 @@ export default function Home() {
       const orderData = {
         email,
         yourPerspective,
-        discussedItems: discussedItems || "",
+        firstTime: firstTime || "",
+        violence: violence || "",
         desiredResolution: desiredResolution || "",
         previousAttempts: previousAttempts || "",
         theirPerspective: theirPerspective || ""
@@ -384,13 +386,25 @@ ${result.navigationScript}
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              What exactly was discussed or agreed upon?
+              Is this the first time this topic has been argued on?
             </label>
             <textarea
-              value={discussedItems}
-              onChange={(e) => setDiscussedItems(e.target.value)}
+              value={firstTime}
+              onChange={(e) => setFirstTime(e.target.value)}
               className="input-field min-h-[80px]"
-              placeholder="Specific topics, conversations, agreements..."
+              placeholder="Yes/No, and details if it's recurring..."
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              Was there any violence involved?
+            </label>
+            <textarea
+              value={violence}
+              onChange={(e) => setViolence(e.target.value)}
+              className="input-field min-h-[80px]"
+              placeholder="Physical violence, threats, property damage..."
             />
           </div>
 

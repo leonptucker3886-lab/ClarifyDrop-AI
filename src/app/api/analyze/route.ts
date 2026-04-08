@@ -33,7 +33,8 @@ export async function POST(request: NextRequest) {
     const orderData = {
       email: order.email,
       yourPerspective: order.yourPerspective,
-      discussedItems: order.discussedItems || "",
+      firstTime: order.firstTime || "",
+      violence: order.violence || "",
       desiredResolution: order.desiredResolution || "",
       previousAttempts: order.previousAttempts || "",
       theirPerspective: order.theirPerspective || ""
