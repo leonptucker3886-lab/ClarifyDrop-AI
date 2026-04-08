@@ -23,17 +23,15 @@ This service delivers instant factual analysis based only on submitted text. Onc
 
 const ClarityLogo = () => (
   <div className="flex items-center gap-4">
-    <div className="relative">
-      {/* Eyeball outer white */}
-      <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-xl border-2 border-slate-200">
-        {/* Iris (blue ring) */}
-        <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center border-2 border-blue-300">
-          {/* Pupil made of C */}
-          <span className="text-black text-2xl font-black transform rotate-90">C</span>
-        </div>
-      </div>
-      {/* Small highlight dot */}
-      <div className="absolute top-3 left-4 w-2 h-2 bg-white rounded-full opacity-80"></div>
+    <div className="relative w-16 h-16">
+      {/* Lightbulb base */}
+      <div className="w-10 h-12 bg-yellow-400 rounded-t-full mx-auto"></div>
+      {/* Lightbulb bottom */}
+      <div className="w-6 h-6 bg-yellow-400 rounded-b-full mx-auto"></div>
+      {/* Filament */}
+      <div className="absolute top-3 left-1/2 transform -translate-x-1/2 w-1 h-6 bg-black rounded-full"></div>
+      {/* Rays */}
+      <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-4 border-transparent border-t-yellow-300"></div>
     </div>
     <div className="flex flex-col">
       <span className="text-white text-3xl font-bold tracking-tight">Clarity</span>
