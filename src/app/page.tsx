@@ -452,6 +452,35 @@ ${result.navigationScript}
               </div>
             </div>
 
+            <div className="bg-slate-800 p-6 rounded-lg border border-slate-700 space-y-4">
+              <div className="flex items-start space-x-3">
+                <Checkbox
+                  id="terms"
+                  checked={agreedToTerms}
+                  onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
+                  className="border-white data-[state=checked]:bg-yellow-400 data-[state=checked]:border-yellow-400"
+                />
+                <div className="space-y-2">
+                  <Label htmlFor="terms" className="text-sm text-slate-300 font-normal cursor-pointer">
+                    I agree this is a one-time digital purchase of an AI-generated factual report. No refunds. Payment supports development of larger conflict-management tools. Data deleted after 24 hours. Not therapy or legal advice.{" "}
+                    <Button
+                      type="button"
+                      variant="link"
+                      className="h-auto p-0 text-blue-400 hover:text-blue-300 underline"
+                      onClick={() => setShowTerms(!showTerms)}
+                    >
+                      Read full Terms
+                    </Button>
+                  </Label>
+                  {showTerms && (
+                    <div className="mt-4 p-4 bg-slate-900 rounded text-sm text-slate-400 whitespace-pre-wrap">
+                      {TERMS_TEXT}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
             <div style={{ pointerEvents: !agreedToTerms ? 'none' : 'auto', opacity: !agreedToTerms ? 0.5 : 1 }}>
               <PayPalButtons
               createOrder={async (data, actions) => {
