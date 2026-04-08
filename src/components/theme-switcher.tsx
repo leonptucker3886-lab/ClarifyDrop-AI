@@ -13,18 +13,23 @@ const themeOptions: { value: Theme; label: string; icon: string }[] = [
 export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
 
+  const handleThemeChange = (newTheme: Theme) => {
+    console.log("Switching to theme:", newTheme);
+    setTheme(newTheme);
+  };
+
   return (
-    <div className="fixed top-4 right-4 z-50 flex gap-1">
+    <div className="fixed top-4 right-4 z-50 flex gap-1 bg-black/20 backdrop-blur-sm p-2 rounded-lg border border-white/10">
       {themeOptions.map((option) => (
         <Button
           key={option.value}
           variant={theme === option.value ? "default" : "outline"}
           size="sm"
-          onClick={() => setTheme(option.value)}
-          className={`bg-card/80 backdrop-blur-sm border-border/50 hover:bg-card/90 ${
+          onClick={() => handleThemeChange(option.value)}
+          className={`transition-all duration-200 ${
             theme === option.value
-              ? "ring-2 ring-primary"
-              : ""
+              ? "ring-2 ring-white scale-110"
+              : "hover:scale-105"
           }`}
           title={option.label}
         >

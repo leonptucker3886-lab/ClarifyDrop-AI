@@ -35,14 +35,39 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   }, []);
 
   useEffect(() => {
-    // Apply theme to document
-    const root = document.documentElement;
+    // Apply theme directly to body
+    const body = document.body;
 
-    // Set data-theme attribute for theme switching
-    root.setAttribute("data-theme", theme);
+    // Remove all existing theme classes
+    body.classList.remove("theme-dark", "theme-light", "theme-blue", "theme-green");
+
+    // Add current theme class
+    body.classList.add(`theme-${theme}`);
+
+    // Apply immediate visual changes based on theme
+    switch (theme) {
+      case "light":
+        body.style.background = "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)";
+        body.style.color = "#0f172a";
+        break;
+      case "blue":
+        body.style.background = "linear-gradient(135deg, #1e293b 0%, #334155 100%)";
+        body.style.color = "#f1f5f9";
+        break;
+      case "green":
+        body.style.background = "linear-gradient(135deg, #1e293b 0%, #334155 100%)";
+        body.style.color = "#f1f5f9";
+        break;
+      default: // dark
+        body.style.background = "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)";
+        body.style.color = "#f1f5f9";
+        break;
+    }
 
     // Save to localStorage
     localStorage.setItem("claritydrop-theme", theme);
+
+    console.log("Theme changed to:", theme);
   }, [theme]);
 
   return (
