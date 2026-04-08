@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 
 interface AnalysisResult {
   agreements: string[];
@@ -23,37 +22,18 @@ const TERMS_TEXT = `This is a one-time digital purchase of an AI-generated factu
 This service delivers instant factual analysis based only on submitted text. Once the report is generated and emailed, the purchase is final.`;
 
 const ClarityLogo = () => (
-  <svg
-    width="64"
-    height="64"
-    viewBox="0 0 64 64"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className="text-white"
-  >
-    {/* Water drop/teardrop shape */}
-    <path
-      d="M32 8C32 8 16 16 16 32C16 40 20 48 32 56C44 48 48 40 48 32C48 16 32 8 32 8Z"
-      stroke="currentColor"
-      strokeWidth="3"
-      fill="rgba(59,130,246,0.2)"
-    />
-    {/* Inner water drop highlight */}
-    <path
-      d="M32 16C32 16 24 20 24 28C24 32 26 36 32 40C38 36 40 32 40 28C40 20 32 16 32 16Z"
-      stroke="currentColor"
-      strokeWidth="2"
-      fill="rgba(59,130,246,0.4)"
-    />
-    {/* Center reflection */}
-    <ellipse
-      cx="32"
-      cy="24"
-      rx="3"
-      ry="2"
-      fill="currentColor"
-    />
-  </svg>
+  <div className="flex items-center gap-2 text-white font-bold">
+    <span className="text-2xl">ClarityB</span>
+    <span
+      className="text-3xl italic"
+      style={{
+        fontFamily: '"Dancing Script", "Brush Script MT", cursive',
+        textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+      }}
+    >
+      AI
+    </span>
+  </div>
 );
 
 export default function Home() {
@@ -379,7 +359,6 @@ ${result.navigationScript}
 
   return (
     <main className="min-h-screen py-12 px-4">
-      <ThemeSwitcher />
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <div className="flex justify-center mb-8">
