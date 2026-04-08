@@ -20,7 +20,7 @@ export default function Home() {
   const [step, setStep] = useState<"form" | "processing" | "result">("form");
   const [email, setEmail] = useState("");
   const [yourPerspective, setYourPerspective] = useState("");
-  const [discussedItems, setDiscussedItems] = useState("");
+  const [brokeAgreement, setBrokeAgreement] = useState("");
   const [desiredResolution, setDesiredResolution] = useState("");
   const [previousAttempts, setPreviousAttempts] = useState("");
   const [theirPerspective, setTheirPerspective] = useState("");
@@ -93,7 +93,7 @@ export default function Home() {
       const orderData = {
         email,
         yourPerspective,
-        discussedItems: discussedItems || "",
+        brokeAgreement: brokeAgreement || "",
         desiredResolution: desiredResolution || "",
         previousAttempts: previousAttempts || "",
         theirPerspective: theirPerspective || ""
@@ -384,14 +384,17 @@ ${result.navigationScript}
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              What exactly was discussed or agreed upon?
+              Did this break a previous agreement or boundary?
             </label>
             <textarea
-              value={discussedItems}
-              onChange={(e) => setDiscussedItems(e.target.value)}
+              value={brokeAgreement}
+              onChange={(e) => setBrokeAgreement(e.target.value)}
               className="input-field min-h-[80px]"
-              placeholder="Specific topics, conversations, agreements..."
+              placeholder="Describe the previous agreement or boundary..."
             />
+            <p className="text-slate-500 text-xs mt-1">
+              If yes, describe the previous agreement or boundary that was broken. If no previous agreement existed, write &apos;No previous agreement or boundary was set.&apos;
+            </p>
           </div>
 
           <div>

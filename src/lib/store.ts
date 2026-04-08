@@ -2,7 +2,7 @@ export interface Order {
   id: string;
   email: string;
   yourPerspective: string;
-  discussedItems: string;
+  brokeAgreement: string;
   desiredResolution: string;
   previousAttempts: string;
   theirPerspective: string;
