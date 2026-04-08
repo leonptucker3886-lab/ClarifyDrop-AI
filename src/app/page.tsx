@@ -37,6 +37,16 @@ const ClarityLogo = () => (
       <span className="text-white text-3xl font-bold tracking-tight">Clarity</span>
       <span className="text-blue-400 text-sm font-medium -mt-1">AI</span>
     </div>
+    <div className="relative w-16 h-16">
+      {/* Lightbulb base */}
+      <div className="w-10 h-12 bg-yellow-400 rounded-t-full mx-auto"></div>
+      {/* Lightbulb bottom */}
+      <div className="w-6 h-6 bg-yellow-400 rounded-b-full mx-auto"></div>
+      {/* Filament */}
+      <div className="absolute top-3 left-1/2 transform -translate-x-1/2 w-1 h-6 bg-black rounded-full"></div>
+      {/* Rays */}
+      <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-4 border-transparent border-t-yellow-300"></div>
+    </div>
   </div>
 );
 
