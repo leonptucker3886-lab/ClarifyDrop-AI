@@ -22,8 +22,11 @@ const TERMS_TEXT = `This is a one-time digital purchase of an AI-generated factu
 This service delivers instant factual analysis based only on submitted text. Once the report is generated and emailed, the purchase is final.`;
 
 const ClarityLogo = () => (
-  <div className="flex items-center gap-2 text-white font-bold">
-    <span className="text-2xl">ClarityB</span>
+  <div className="flex items-center gap-3 text-white font-bold">
+    <span className="text-2xl">Clarity</span>
+    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center shadow-lg">
+      <span className="text-white text-sm font-bold">⚖️</span>
+    </div>
     <span
       className="text-3xl italic"
       style={{
