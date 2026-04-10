@@ -53,7 +53,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const [orderId, setOrderId] = useState("");
   const [copyFeedback, setCopyFeedback] = useState<Record<string, string>>({});
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [termsAgreed, setTermsAgreed] = useState(false);
   const [paypalError, setPaypalError] = useState(false);
   const summaryRef = useRef<HTMLButtonElement>(null);
   const agreementsRef = useRef<HTMLButtonElement>(null);
@@ -443,15 +443,15 @@ ${result.navigationScript}
             <div className="flex items-start space-x-3 mb-4">
               <Checkbox
                 id="terms"
-                checked={agreedToTerms}
-                onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
+                checked={termsAgreed}
+                onCheckedChange={(checked) => setTermsAgreed(checked as boolean)}
                 className="border-white data-[state=checked]:bg-yellow-400 data-[state=checked]:border-yellow-400"
               />
               <Label htmlFor="terms" className="text-sm text-slate-300 font-normal cursor-pointer">
                 I agree this is a one-time digital purchase of an AI-generated factual report. No refunds. Payment supports development of larger conflict-management tools. Data deleted after 24 hours. Not therapy or legal advice.
               </Label>
             </div>
-            {agreedToTerms ? (
+            {termsAgreed ? (
               process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ? (
                 <PayPalScriptProvider options={{
                   clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '',
@@ -503,14 +503,14 @@ ${result.navigationScript}
                     console.error('PayPal error:', err);
                     setPaypalError(true);
                   }}
-                  style={{ color: 'blue', shape: 'rect', label: 'paypal' }}
+                  style={{ layout: 'vertical', color: 'blue' }}
                 />
                 {paypalError && (
                   <p className="text-red-400 mt-4">PayPal is having trouble loading. Try refreshing the page.</p>
                 )}
                 </PayPalScriptProvider>
               ) : (
-                <p className="text-red-400">PayPal not configured – check NEXT_PUBLIC_PAYPAL_CLIENT_ID in Vercel</p>
+                <p className="text-red-400">If PayPal is not loading, check that NEXT_PUBLIC_PAYPAL_CLIENT_ID is set correctly in Vercel and redeploy.</p>
               )
             ) : (
               <p className="text-slate-400">Please agree to the terms to enable PayPal checkout.</p>
